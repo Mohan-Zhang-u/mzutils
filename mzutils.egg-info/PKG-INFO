@@ -1,13 +1,12 @@
 Metadata-Version: 2.1
 Name: mzutils
-Version: 0.1007
+Version: 0.1008
 Summary: A Mohan Zhang's utility package
 Home-page: https://github.com/Mohan-Zhang-u/mzutils
 Author: Mohan Zhang
 Author-email: mohan.zhang.mz@gmail.com
 License: UNKNOWN
-Description: ### (still under developing)
-        # My Personal Utils
+Description: # Mohan Zhang's Utils
         
 Platform: UNKNOWN
 Classifier: Programming Language :: Python :: 3
