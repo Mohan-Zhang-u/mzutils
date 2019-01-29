@@ -5,4 +5,5 @@ mzutils/os_misc.py
 mzutils.egg-info/PKG-INFO
 mzutils.egg-info/SOURCES.txt
 mzutils.egg-info/dependency_links.txt
+mzutils.egg-info/requires.txt
 mzutils.egg-info/top_level.txt
