@@ -2,6 +2,7 @@ import os
 import shutil
 import codecs
 import time
+import errno
 
 # dependencies
 import nltk
@@ -21,6 +22,20 @@ def clean_dir(dir_path, just_files=True):
         elif not just_files:
             if os.path.isdir(name_path):
                 shutil.rmtree(name_path)
+
+
+def mkdir_p(dir_path):
+    """
+    mkdir -p functionality in python
+    :param dir_path:
+    :return:
+    """
+    try:
+        os.makedirs(dir_path, exist_ok=True)
+    except OSError as e:
+        if e.errno != errno.EEXIST:
+            raise e
+
 
 
 def documents_segementor_on_word_length(documents_dir, store_dir, max_length, language='english',
