@@ -1,2 +1,1 @@
-### (still under developing)
-# My Personal Utils
+# Mohan Zhang's Utils
