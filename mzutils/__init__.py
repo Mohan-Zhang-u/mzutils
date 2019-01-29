@@ -1,2 +1,1 @@
-def hw():
-    return "hello world!"
+from .os_misc import *
