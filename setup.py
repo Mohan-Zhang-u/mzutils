@@ -4,8 +4,7 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 setuptools.setup(
     name='mzutils',
-    version='0.1',
-    scripts=['mzutils.sh'],
+    version='0.1005',
     author="Mohan Zhang",
     author_email="mohan.zhang.mz@gmail.com",
     description="A Mohan Zhang's utility package",
@@ -19,9 +18,7 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     install_requires=[
-        'os',
-        'codecs',
-        'shutil',
-        'time'
+
     ]
+    # std lib: 'os','shutil','time','codecs'
 )
