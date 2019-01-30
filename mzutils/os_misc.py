@@ -4,6 +4,8 @@ import codecs
 import time
 import errno
 import json
+import zipfile
+import tarfile
 
 # dependencies
 import nltk
@@ -36,6 +38,28 @@ def mkdir_p(dir_path):
     except OSError as e:
         if e.errno != errno.EEXIST:
             raise e
+
+
+def unzip_all(dir_path, target_path, endswith=".zip"):
+    """
+
+    :param dir_path:
+    :param target_path:
+    :param endswith: ".zip", ".tar.gz" or ".tar"
+    :return:
+    """
+    for item in os.listdir(dir_path):
+        if item.endswith(endswith):
+            if endswith == ".zip":
+                zip_ref = zipfile.ZipFile(os.path.join(dir_path, item), 'r')
+            elif endswith == ".tar.gz":
+                zip_ref = tarfile.open(os.path.join(dir_path, item), 'r:gz')
+            elif endswith == ".tar":
+                zip_ref = tarfile.open(os.path.join(dir_path, item), 'r:')
+            else:
+                continue
+            zip_ref.extractall(target_path)
+            zip_ref.close()
 
 
 def dump_config(file_path, dict):
