@@ -21,8 +21,10 @@ def clean_dir(dir_path, just_files=True):
     if not os.path.isdir(dir_path):
         if not os.path.exists(dir_path):
             print(str(dir_path) + " does not exists!")
+            return
         if not os.path.isdir(dir_path):
             print(str(dir_path) + " has to be a directory!")
+            return
     for name in os.listdir(dir_path):
         name_path = os.path.join(dir_path, name)
         if os.path.isfile(name_path):
