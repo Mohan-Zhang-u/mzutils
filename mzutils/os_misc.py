@@ -18,6 +18,11 @@ def clean_dir(dir_path, just_files=True):
     :param just_files: If just_files=False, also remove all directory trees in that directory.
     :return:
     """
+    if not os.path.isdir(dir_path):
+        if not os.path.exists(dir_path):
+            print(str(dir_path) + " does not exists!")
+        if not os.path.isdir(dir_path):
+            print(str(dir_path) + " has to be a directory!")
     for name in os.listdir(dir_path):
         name_path = os.path.join(dir_path, name)
         if os.path.isfile(name_path):
