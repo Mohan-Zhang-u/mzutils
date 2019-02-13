@@ -1,4 +1,23 @@
 python setup.py bdist_wheel
 python -m twine upload dist/*
-/anaconda/envs/py35/bin/
 pip install --upgrade mzutils
+
+
+
+#Installation:
+https://dzone.com/articles/executable-package-pip-install
+https://python-packaging.readthedocs.io/en/latest/
+pip install --upgrade pip setuptools wheel
+pip install tqdm
+pip install --user --upgrade twine
+
+then, create setup.py
+
+then, create and edit .pypirc in your home directory;
+[distutils]
+index-servers=pypi
+[pypi]
+repository = https://upload.pypi.org/legacy/
+username =<your username>
+
+then, edit tips.sh
