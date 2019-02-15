@@ -22,6 +22,9 @@ def read_tsv(file_path):
     :param file_path:
     :return:
     """
+    cached_list = []
     with codecs.open(file_path, "r", encoding="utf-8") as fp:
         tsv_reader = csv.reader(fp, delimiter='\t')
-        return tsv_reader
+        for row in tsv_reader:
+            cached_list.append(row)
+    return cached_list
