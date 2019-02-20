@@ -4,7 +4,7 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 setuptools.setup(
     name='mzutils',
-    version='0.1021',
+    version='0.1022',
     author="Mohan Zhang",
     author_email="mohan.zhang.mz@gmail.com",
     description="A Mohan Zhang's utility package",

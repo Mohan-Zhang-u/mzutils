@@ -1,12 +1,20 @@
 Metadata-Version: 2.1
 Name: mzutils
-Version: 0.1021
+Version: 0.1022
 Summary: A Mohan Zhang's utility package
 Home-page: https://github.com/Mohan-Zhang-u/mzutils
 Author: Mohan Zhang
 Author-email: mohan.zhang.mz@gmail.com
 License: UNKNOWN
 Description: # Mohan Zhang's Utils
+        It is a personal utilities' toolkit that contains various methods to do miscellaneous jobs related to data cleaning and 
+        preprocessing, especially for JSON, CSV, SQL and many other data formats, for Datasets like SQuAD, GLUE, Deepmind CNN/DailyMail etc.  
+        
+        This toolkit's only purpose is to reuse the code and make Mohan Zhang's life easier.  
+        
+        The whole toolkit, without any specification, is under MIT license.  
+        
+        install by [pip install mzutils](https://pypi.org/project/mzutils/)
         
 Platform: UNKNOWN
 Classifier: Programming Language :: Python :: 3
