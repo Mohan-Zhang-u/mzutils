@@ -18,7 +18,8 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     install_requires=[
-        'nltk'
+        'nltk',
+        'numpy'
     ]
     # std lib: 'os','shutil','time','codecs'
 )
