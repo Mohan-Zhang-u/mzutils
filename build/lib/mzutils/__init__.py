@@ -4,3 +4,4 @@ from .tsv_misc import *
 from .json_misc import *
 from .data_preprocessing import *
 from .numpy_misc import *
+from .string_misc import *
