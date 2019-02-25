@@ -25,7 +25,14 @@ def argmax_indices(one_d_array, n=None):
     :param one_d_array:
     :param n:
     :return:
+
+    >>> import numpy as np
+    >>> import mzutils
+    >>> a=np.array([4,3,1,2])
+    >>> mzutils.argmax_indices(a)
+    array([0, 1, 3, 2])
     """
+
     l = len(one_d_array)
     flat_indices = np.argpartition(one_d_array, l - 1)
     flat_indices = np.flip(flat_indices, axis=0)
