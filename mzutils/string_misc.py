@@ -40,6 +40,6 @@ def py_deserialize(filepath):
     :return:
     """
     itemlist = None
-    with codecs.open('filepath', 'rb') as fp:
+    with codecs.open(filepath, 'rb') as fp:
         itemlist = pickle.load(fp)
     return itemlist
