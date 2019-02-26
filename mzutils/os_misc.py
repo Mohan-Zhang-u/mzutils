@@ -76,10 +76,11 @@ def documents_segementor_on_word_length(documents_dir, store_dir, max_length, la
     :param documents_dir: where all documents located.
     :param store_dir: where to store segmented documents.
     :param max_length: document segments' max length.
-    :param language: for the use of nltk, default english
+    :param language: for the use of nltk, default english.
     :param clean_store_dir:
-    :return:
+    :return: number of documents after segmented.
     """
+    final_num_of_docs = 0
     if not os.path.isdir(documents_dir):
         raise Exception("documents_dir: where all documents located.")
     if not os.path.isdir(store_dir):
@@ -88,7 +89,8 @@ def documents_segementor_on_word_length(documents_dir, store_dir, max_length, la
         clean_dir(store_dir, just_files=False)
     names = [name for name in os.listdir(documents_dir) if os.path.isfile(os.path.join(documents_dir, name))]
     for name in names:
-        helper_document_segmentor(documents_dir, store_dir, name, max_length, language)
+        final_num_of_docs += helper_document_segmentor(documents_dir, store_dir, name, max_length, language)
+    return final_num_of_docs
 
 
 # ------------------helper funcs-----------------------------
@@ -115,6 +117,7 @@ def helper_document_segmentor(documents_dir, store_dir, name, max_length, langua
                 document = ""
         documents.append(document)
     helper_save_documents(store_dir, name, documents)
+    return len(documents)
 
 
 def helper_save_documents(store_dir, name, documents):
