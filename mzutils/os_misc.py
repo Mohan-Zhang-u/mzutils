@@ -172,6 +172,7 @@ def loop_through_copy_files_to_one_dir(looped_dir, target_dir, include_link = Fa
     if not os.path.isdir(target_dir):
         raise Exception("target_dir: a directory.")
     for thing in os.listdir(looped_dir):
+        thing = os.path.join(looped_dir, thing)
         if os.path.isdir(thing):
             loop_through_copy_files_to_one_dir(thing, target_dir)
         elif os.path.isfile(thing):
