@@ -10,6 +10,28 @@ import tarfile
 import nltk
 
 
+def parent_dir_and_name(file_path):
+    """
+    >>> file_path="a/b.c"
+    >>> parent_dir_and_name(file_path)
+    ('/root/.../a', 'b.c')
+    :param file_path:
+    :return:
+    """
+    return os.path.split(os.path.abspath(file_path))
+
+
+def basename_and_extension(file_path):
+    """
+    >>> file_path="a/b.c"
+    >>> basename_and_extension(file_path)
+    ('b', '.c')
+    :param file_path:
+    :return:
+    """
+    return os.path.splitext(os.path.basename(file_path))
+
+
 def clean_dir(dir_path, just_files=True):
     """
     Clean up a directory.
@@ -136,3 +158,24 @@ def helper_check_existance_and_add_timestamp(store_dir, name):
     while os.path.exists(filename + extension):
         filename += timestamp
     return filename + extension
+
+
+def loop_through_copy_files_to_one_dir(looped_dir, target_dir, include_link=False):
+    """
+    function to loop through nested directories and copy all the files to a target directory.
+    :param looped_dir:
+    :param target_dir: a directory string.
+    :return:
+    """
+    if not os.path.isdir(looped_dir):
+        raise Exception("looped_dir: a directory.")
+    if not os.path.isdir(target_dir):
+        raise Exception("target_dir: a directory.")
+    for thing in os.listdir(looped_dir):
+        if os.path.isdir(thing):
+            loop_through_copy_files_to_one_dir(thing, target_dir)
+        elif os.path.isfile(thing):
+            shutil.move(thing, os.path.join(target_dir, parent_dir_and_name(thing)[1]))
+        elif include_link:
+            shutil.move(thing, os.path.join(target_dir, parent_dir_and_name(thing)[1]))
+    return
