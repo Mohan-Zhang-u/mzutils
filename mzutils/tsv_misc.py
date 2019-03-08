@@ -43,7 +43,7 @@ def append_tsv(file_path, rows):
             tsv_writer.writerow(row)
 
 
-def segment_large_tsv(file_path, destination_path, segmentation_length, duplicate_header = False):
+def segment_large_tsv(file_path, destination_path, segmentation_length, duplicate_header=False):
     """
     segment a large file to several smaller files to a destination.
     If duplicate_header is True, the first line of  the original large file will be duplicated to every segmented files,
@@ -61,7 +61,7 @@ def segment_large_tsv(file_path, destination_path, segmentation_length, duplicat
         if duplicate_header:
             header = tsv_reader.__next__()
             segmentation_length += 1
-        j=0
+        j = 0
         while True:
             i = 0
             j += 1
@@ -77,3 +77,15 @@ def segment_large_tsv(file_path, destination_path, segmentation_length, duplicat
                         i += 1
                     except StopIteration:
                         return j
+
+
+def save_tsv_as_csv(tsv_file, csv_file=None):
+    from mzutils.os_misc import parent_dir_and_name, basename_and_extension
+    with codecs.open(tsv_file, "r", encoding="utf-8") as tfp:
+        if csv_file is None:
+            csv_file = os.path.join(parent_dir_and_name(tsv_file)[0], basename_and_extension(tsv_file)[0]) + '.csv'
+        with codecs.open(csv_file, "w+", encoding="utf-8") as cfp:
+            tsv_reader = csv.reader(tfp, delimiter='\t')
+            csv_writer = csv.writer(cfp, delimiter=',')
+            for row in tsv_reader:
+                csv_writer.writerow(row)
