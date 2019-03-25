@@ -63,7 +63,7 @@ def generate_multi_test_cases(list_of_paragraphs, list_of_questions, json_store_
 # │       ├── "Question"
 # │       └── "QuestionId"
 # other useless rows omitted.
-def retrive_questions_from_triviaQA(file_path, destination_path = None):
+def retrieve_questions_from_triviaQA(file_path, destination_path = None):
     """
     :param file_path:
     :return:[{"Question" : "", "QuestionId" : "", "AcceptableAnswers" : ""}]
