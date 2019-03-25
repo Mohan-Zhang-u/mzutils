@@ -1,5 +1,6 @@
 import codecs
 import json
+import mzutils.json_misc
 
 
 # ---------------------------------SQuAD 1.1 Functionss---------------------------------
@@ -50,3 +51,33 @@ def generate_multi_test_cases(list_of_paragraphs, list_of_questions, json_store_
 
     with codecs.open(json_store_path, 'w+', encoding='utf-8') as fp:
         json.dump(jsondict, fp)
+
+
+# ---------------------------------TriviaQA Functionss---------------------------------
+# file.json
+# ├── [{}] "data"
+# │       ├── {} "Answer"
+# │       │   └── [] "Aliases"
+# │       │   └── [] "NormalizedAliases"
+# │       │   └── "NormalizedValue"
+# │       ├── "Question"
+# │       └── "QuestionId"
+# other useless rows omitted.
+def retrive_questions_from_triviaQA(file_path, destination_path = None):
+    """
+    :param file_path:
+    :return:[{"Question" : "", "QuestionId" : "", "AcceptableAnswers" : ""}]
+    or
+    None and write {"data": [{"Question" : "", "QuestionId" : "", "AcceptableAnswers" : ""}]}
+    """
+    return_list = []
+    data_list = mzutils.json_misc.load_config(file_path)["data"]
+    for data in data_list:
+        AcceptableAnswers = data["answer"]["Aliases"] + data["answer"]["NormalizedAliases"] + [
+            data["answer"]["NormalizedValue"]]
+        return_list.append(
+            {"Question": data["Question"], "QuestionId": data["QuestionId"], "AcceptableAnswers": AcceptableAnswers})
+    if not destination_path:
+        return return_list
+    else:
+        mzutils.json_misc.dump_config(destination_path, {"data": return_list})
