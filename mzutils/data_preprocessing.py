@@ -55,7 +55,7 @@ def generate_multi_test_cases(list_of_paragraphs, list_of_questions, json_store_
 
 # ---------------------------------TriviaQA Functionss---------------------------------
 # file.json
-# ├── [{}] "data"
+# ├── [{}] "Data"
 # │       ├── {} "Answer"
 # │       │   └── [] "Aliases"
 # │       │   └── [] "NormalizedAliases"
@@ -71,7 +71,7 @@ def retrieve_questions_from_triviaQA(file_path, destination_path = None):
     None and write {"data": [{"Question" : "", "QuestionId" : "", "AcceptableAnswers" : ""}]}
     """
     return_list = []
-    data_list = mzutils.json_misc.load_config(file_path)["data"]
+    data_list = mzutils.json_misc.load_config(file_path)["Data"]
     for data in data_list:
         AcceptableAnswers = data["answer"]["Aliases"] + data["answer"]["NormalizedAliases"] + [
             data["answer"]["NormalizedValue"]]
