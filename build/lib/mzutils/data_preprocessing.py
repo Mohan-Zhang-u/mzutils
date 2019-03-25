@@ -73,10 +73,10 @@ def retrieve_questions_from_triviaQA(file_path, destination_path = None):
     return_list = []
     data_list = mzutils.json_misc.load_config(file_path)["Data"]
     for data in data_list:
-        AcceptableAnswers = data["answer"]["Aliases"] + data["answer"]["NormalizedAliases"] + [
-            data["answer"]["NormalizedValue"]]
+        AcceptableAnswers = data["Answer"]["Aliases"] + data["Answer"]["NormalizedAliases"] + [
+            data["Answer"]["NormalizedValue"]]
         return_list.append(
-            {"Question": data["Question"], "QuestionId": data["QuestionId"], "AcceptableAnswers": AcceptableAnswers})
+            {"question": data["Question"], "questionid": data["QuestionId"], "acceptableanswers": AcceptableAnswers})
     if not destination_path:
         return return_list
     else:
