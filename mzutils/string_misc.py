@@ -1,6 +1,7 @@
 import nltk
 import pickle
 import codecs
+import ast
 
 def add_spaces_between_special_characters(InputText):
     """
@@ -43,3 +44,12 @@ def py_deserialize(filepath):
     with codecs.open(filepath, 'rb') as fp:
         itemlist = pickle.load(fp)
     return itemlist
+
+
+def str_rep_to_list(s):
+    """
+    convert a string representation of list to a python list object.
+    :param s:
+    :return:
+    """
+    return ast.literal_eval(s)
