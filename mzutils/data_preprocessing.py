@@ -92,6 +92,11 @@ def generate_multi_test_cases_triviaQA(retrieved_json_path, json_store_path, doc
     """
     given pairs of paragraphs and questions, it creates a json file just like how training/dev/test data stored in
     SQuAD 1.1
+    the format is :
+    {
+        "[question_order, answer_order, "qid", ["ground_truths"]] : "ans",
+        "[0, 0, 'tc_1250', ['The Swiss Miss', 'Martina hingis', 'Martina Hingisov\u00e1', 'Martina Hingis', 'MartinaHingis', 'Martina Hingisova', 'Hingis', 'hingis', 'swiss miss', 'martina hingis', 'martina hingisova', 'martinahingis', 'martina hingisov\u00e1', 'martina hingis']]": "Li Na",
+    }
     """
     retrieved_list = mzutils.json_misc.load_config(retrieved_json_path)['data']
     missing_files = []
