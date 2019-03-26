@@ -1,5 +1,6 @@
 import codecs
 import json
+import os
 import mzutils.json_misc
 
 
@@ -24,6 +25,7 @@ import mzutils.json_misc
 # │       │               └── "question": "paragraph question?"
 # │       └── "title": "document id"
 # └── "version": 1.1
+
 
 def generate_multi_test_cases(list_of_paragraphs, list_of_questions, json_store_path):
     """
@@ -54,6 +56,7 @@ def generate_multi_test_cases(list_of_paragraphs, list_of_questions, json_store_
 
 
 # ---------------------------------TriviaQA Functionss---------------------------------
+
 # file.json
 # ├── [{}] "Data"
 # │       ├── {} "Answer"
@@ -63,7 +66,9 @@ def generate_multi_test_cases(list_of_paragraphs, list_of_questions, json_store_
 # │       ├── "Question"
 # │       └── "QuestionId"
 # other useless rows omitted.
-def retrieve_questions_from_triviaQA(file_path, destination_path = None):
+
+
+def retrieve_questions_from_triviaQA(file_path, destination_path=None):
     """
     :param file_path:
     :return:[{"Question" : "", "QuestionId" : "", "AcceptableAnswers" : ""}]
@@ -81,3 +86,51 @@ def retrieve_questions_from_triviaQA(file_path, destination_path = None):
         return return_list
     else:
         mzutils.json_misc.dump_config(destination_path, {"data": return_list})
+
+
+def generate_multi_test_cases_triviaQA(retrieved_json_path, json_store_path, documents_path, missing_file_path=None):
+    """
+    given pairs of paragraphs and questions, it creates a json file just like how training/dev/test data stored in
+    SQuAD 1.1
+    """
+    retrieved_list = mzutils.json_misc.load_config(retrieved_json_path)['data']
+    missing_files = []
+
+    data = []
+    version = "1.1"
+    jsondict = {}
+    jsondict["data"] = data
+    jsondict["version"] = version
+    j = -1
+
+    for i, retrieved_data in enumerate(
+            retrieved_list):  # i:question number from 0; j: number of question|answer pairs from 0
+
+        if i % 500 == 0:
+            print(str(i) + " questions formatted ... ")
+
+        question = retrieved_data["question"]
+        questionid = retrieved_data["questionid"]
+        acceptableanswers = retrieved_data["acceptableanswers"]
+        documents = retrieved_data["documents"]
+
+        for document_name in documents:
+            doc_path = os.path.join(documents_path, document_name)
+            if not os.path.exists(doc_path):
+                missing_files.append(document_name)
+            else:
+                j += 1
+                with codecs.open(doc_path, 'r', encoding='utf8') as fp:
+                    document_content = fp.read()
+                new_paragraph = {}
+                new_paragraph["context"] = document_content
+                new_paragraph["qas"] = [{"answers": [{"answer_start": -1, "text": ""}], "question": question,
+                                         "id": str([i, j, questionid, acceptableanswers])}]
+                data.append(
+                    {"title": "", "paragraphs": [new_paragraph]})  # here we can have multiple paragraph in paragraphs
+
+    with codecs.open(json_store_path, 'w+', encoding='utf-8') as fp:
+        json.dump(jsondict, fp)
+    if missing_file_path:
+        with codecs.open(missing_file_path, 'w+', encoding='utf-8') as fp:
+            json.dump(missing_files, fp)
