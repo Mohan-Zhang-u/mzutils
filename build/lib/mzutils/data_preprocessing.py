@@ -2,6 +2,7 @@ import codecs
 import json
 import os
 import mzutils.json_misc
+import mzutils.os_misc
 
 
 # ---------------------------------SQuAD 1.1 Functionss---------------------------------
@@ -53,6 +54,17 @@ def generate_multi_test_cases(list_of_paragraphs, list_of_questions, json_store_
 
     with codecs.open(json_store_path, 'w+', encoding='utf-8') as fp:
         json.dump(jsondict, fp)
+
+
+def simple_squad_segmentor(squad_file_path, store_location, num_of_paragraphs=500):
+    squad_file_name = mzutils.os_misc.basename_and_extension(squad_file_path)[0]
+    squad_file_data = mzutils.load_config(squad_file_path)["data"]
+    epoch = len(squad_file_data) // num_of_paragraphs + 1
+    for i in range(epoch):
+        store_dict = {"data": squad_file_data[(i * num_of_paragraphs):((i + 1) * num_of_paragraphs)], "version": "1.1"}
+        with codecs.open(os.path.join(store_location, squad_file_name) + str(i) + ".json", 'w+',
+                         encoding='utf-8') as fp:
+            json.dump(store_dict, fp)
 
 
 # ---------------------------------TriviaQA Functionss---------------------------------
