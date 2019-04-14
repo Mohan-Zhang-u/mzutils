@@ -67,7 +67,7 @@ def simple_squad_segmentor(squad_file_path, store_location, num_of_paragraphs=50
             json.dump(store_dict, fp)
 
 
-# ---------------------------------TriviaQA Functionss---------------------------------
+# ---------------------------------TriviaQA Functions---------------------------------
 
 # file.json
 # ├── [{}] "Data"
