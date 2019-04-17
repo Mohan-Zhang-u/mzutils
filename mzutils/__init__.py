@@ -5,3 +5,4 @@ from .json_misc import *
 from .data_preprocessing import *
 from .numpy_misc import *
 from .string_misc import *
+from .probabilities_misc import *
