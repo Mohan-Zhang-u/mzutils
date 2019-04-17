@@ -156,7 +156,7 @@ def generate_multi_test_cases_triviaQA(retrieved_json_path, json_store_path, doc
 # ---------------------------------TriviaQA Evaluation Functions---------------------------------
 
 
-def concatenate_predictions_dicts(squadjsons_files_dir, output_dir=None):
+def concatenate_predictions_dicts(squadjsons_files_dir, output_file=None):
     """
 
     :param squadjsons_files_dir: should be one of "wikipedia-train" "wikipedia-dev" "web-train" "web-dev" "verified-web-dev" "verified-wikipedia-dev"
@@ -167,8 +167,8 @@ def concatenate_predictions_dicts(squadjsons_files_dir, output_dir=None):
     :param outout_dir: directory to store concatenated predictions.json
     :return: None
     """
-    if not output_dir:
-        output_dir = squadjsons_files_dir
+    if not output_file:
+        output_file = os.path.join(squadjsons_files_dir, "predictions.json")
 
     output_dict = {}
     dir_num = 0
