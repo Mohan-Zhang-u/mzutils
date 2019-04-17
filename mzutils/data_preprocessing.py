@@ -58,7 +58,7 @@ def generate_multi_test_cases(list_of_paragraphs, list_of_questions, json_store_
 
 def simple_squad_segmentor(squad_file_path, store_location, num_of_paragraphs=500):
     squad_file_name = mzutils.os_misc.basename_and_extension(squad_file_path)[0]
-    squad_file_data = mzutils.load_config(squad_file_path)["data"]
+    squad_file_data = mzutils.json_misc.load_config(squad_file_path)["data"]
     epoch = len(squad_file_data) // num_of_paragraphs + 1
     for i in range(epoch):
         store_dict = {"data": squad_file_data[(i * num_of_paragraphs):((i + 1) * num_of_paragraphs)], "version": "1.1"}
@@ -151,3 +151,32 @@ def generate_multi_test_cases_triviaQA(retrieved_json_path, json_store_path, doc
     if missing_file_path:
         with codecs.open(missing_file_path, 'w+', encoding='utf-8') as fp:
             json.dump(missing_files, fp)
+
+
+# ---------------------------------TriviaQA Evaluation Functions---------------------------------
+
+
+def concatenate_predictions_dicts(squadjsons_files_dir, output_dir=None):
+    """
+
+    :param squadjsons_files_dir: should be one of "wikipedia-train" "wikipedia-dev" "web-train" "web-dev" "verified-web-dev" "verified-wikipedia-dev"
+    it is actually a directory with format:
+    squadjsons_files_dir
+    ├── squadjsons%d
+    │   └── predictions.json
+    :param outout_dir: directory to store concatenated predictions.json
+    :return: None
+    """
+    if not output_dir:
+        output_dir = squadjsons_files_dir
+
+    output_dict = {}
+    dir_num = 0
+    while True:
+        squadjsonsnum_dir = os.path.join(squadjsons_files_dir,
+                                         "squadjsons" + str(dir_num))  # this is the path of directory squadjsons%d
+        if not os.path.isdir(squadjsonsnum_dir):
+            break
+        output_dict.update(mzutils.json_misc.load_config(os.path.join(squadjsonsnum_dir, "predictions.json")))
+        dir_num += 1
+    mzutils.json_misc.dump_config(output_dict)
