@@ -57,6 +57,7 @@ def generate_multi_test_cases(list_of_paragraphs, list_of_questions, json_store_
 
 
 def simple_squad_segmentor(squad_file_path, store_location, num_of_paragraphs=500):
+    mzutils.os_misc.mkdir_p(store_location)
     squad_file_name = mzutils.os_misc.basename_and_extension(squad_file_path)[0]
     squad_file_data = mzutils.json_misc.load_config(squad_file_path)["data"]
     epoch = len(squad_file_data) // num_of_paragraphs + 1
