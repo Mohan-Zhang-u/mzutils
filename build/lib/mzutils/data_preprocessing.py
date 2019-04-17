@@ -179,4 +179,4 @@ def concatenate_predictions_dicts(squadjsons_files_dir, output_dir=None):
             break
         output_dict.update(mzutils.json_misc.load_config(os.path.join(squadjsonsnum_dir, "predictions.json")))
         dir_num += 1
-    mzutils.json_misc.dump_config(output_dict)
+    mzutils.json_misc.dump_config(output_dir, output_dict)
