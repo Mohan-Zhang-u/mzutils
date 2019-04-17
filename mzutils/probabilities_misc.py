@@ -25,12 +25,21 @@ def vote_for_cluster(elements, vote_metric, top_n=1, default_element=None):
     $$\Theta(n^2)$$
     :param elements: a list of elements.
     :param vote_metric: a metric function that compares two elements at a time. The higher means the similar.
+    The range of this function should be from zero to one.
     :param top_n: number of elements to be retrieved.
     :param default_element: if the computed matrix is a null matrix, what to return.
     :return: list of (element, score) tuples.
+
+    >>> #e.g. compare the similarity of two numbers.
+    >>> def vote_metric(a, b):
+    >>>     return pow(math.e, -abs(a-b))
+
     """
     length = len(elements)
     matrix = np.zeros((length, length), dtype=float)
+
+    if top_n > length:
+        top_n = length
 
     for i in range(length):
         matrix[i, i] = vote_metric(elements[i], elements[i])
