@@ -1,10 +1,10 @@
+import codecs
+import errno
 import os
 import shutil
-import codecs
-import time
-import errno
-import zipfile
 import tarfile
+import time
+import zipfile
 
 # dependencies
 import nltk
@@ -160,7 +160,7 @@ def helper_check_existance_and_add_timestamp(store_dir, name):
     return filename + extension
 
 
-def loop_through_copy_files_to_one_dir(looped_dir, target_dir, include_link = False):
+def loop_through_copy_files_to_one_dir(looped_dir, target_dir, include_link=False):
     """
     function to loop through nested directories and copy all the files to a target directory.
     :param looped_dir:
@@ -180,3 +180,25 @@ def loop_through_copy_files_to_one_dir(looped_dir, target_dir, include_link = Fa
         elif include_link:
             shutil.move(thing, os.path.join(target_dir, parent_dir_and_name(thing)[1]))
     return
+
+
+def loop_through_store_files_to_list(looped_dir, encoding="utf-8"):
+    """
+    function to loop through nested directories and store the content of all files into a list separately.
+    This function does not care about symbolic link inside the nested directories.
+    :param looped_dir:
+    :param encoding:
+    :return: list
+    """
+    re_list = []
+    if not os.path.isdir(looped_dir):
+        raise Exception("looped_dir: a directory.")
+    for thing in os.listdir(looped_dir):
+        thing = os.path.join(looped_dir, thing)
+        if os.path.isdir(thing):
+            re_list = re_list + loop_through_store_files_to_list(thing, encoding)
+        elif os.path.isfile(thing):
+            with codecs.open(thing, 'r', encoding) as fp:
+                filecontent = fp.read()
+                re_list.append(filecontent)
+    return re_list
