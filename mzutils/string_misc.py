@@ -57,23 +57,51 @@ def str_rep_to_list(s):
     return ast.literal_eval(s)
 
 
-def string_segementor_on_word_length(content, max_length, language='english'):
+# def string_segementor_on_word_length(content, max_length, language='english'):
+#     """
+#     segment a long document to several small documents based on the nltk tokenized word length.
+#     sentence structure will be kept.
+#     :param content: content to be segmented by world length, with complete sentences.
+#     :param max_length: document segments' max length.
+#     :param language: for the use of nltk, default english.
+#     :return: a list of segmented contents
+#     """
+#     contents = []
+#     sentences = nltk.sent_tokenize(content, language)
+#     i = 0
+#     word_count = 0
+#     document = ""
+#     while i < len(sentences):
+#         sentence = sentences[i]
+#         current_count = len(nltk.word_tokenize(sentence, language))
+#         if word_count + current_count < max_length:
+#             document = document + sentence + " "
+#             word_count = word_count + current_count
+#             i = i + 1
+#         else:
+#             contents.append(document)
+#             word_count = 0
+#             document = ""
+#     contents.append(document)
+#     return contents
+
+
+def chinese_document_segementor_on_word_length(content, max_length):
     """
     segment a long document to several small documents based on the nltk tokenized word length.
     sentence structure will be kept.
     :param content: content to be segmented by world length, with complete sentences.
     :param max_length: document segments' max length.
-    :param language: for the use of nltk, default english.
     :return: a list of segmented contents
     """
     contents = []
-    sentences = nltk.sent_tokenize(content, language)
+    sentences = chinese_sent_tokenize(content)
     i = 0
     word_count = 0
     document = ""
     while i < len(sentences):
         sentence = sentences[i]
-        current_count = len(nltk.word_tokenize(sentence, language))
+        current_count = len(sentence)
         if word_count + current_count < max_length:
             document = document + sentence + " "
             word_count = word_count + current_count
@@ -84,3 +112,21 @@ def string_segementor_on_word_length(content, max_length, language='english'):
             document = ""
     contents.append(document)
     return contents
+
+
+def chinese_sent_tokenize(content):
+    """
+    a Chinese sentence tokenizer to solve nltk.sent_tokenize bugs mentioned here: https://github.com/nltk/nltk/issues/1824
+    :param content:
+    :return:
+    """
+    sentences = []
+    length = len(content)
+    idx = 0
+    for i in range(length):
+        if content[i] in '？！。？！。?!.':
+            sentences.append(content[idx:i + 1])
+            idx = i
+    if content[idx:] != "":
+        sentences.append(content[idx:])
+    return sentences
