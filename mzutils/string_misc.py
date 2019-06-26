@@ -1,6 +1,7 @@
 import ast
 import codecs
 import pickle
+
 import nltk
 
 
@@ -69,6 +70,7 @@ def string_segementor_on_word_length(content, max_length, language='english'):
     sentences = nltk.sent_tokenize(content, language)
     i = 0
     word_count = 0
+    document = ""
     while i < len(sentences):
         sentence = sentences[i]
         current_count = len(nltk.word_tokenize(sentence, language))
