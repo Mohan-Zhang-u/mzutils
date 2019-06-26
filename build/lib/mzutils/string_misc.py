@@ -1,7 +1,8 @@
-import nltk
-import pickle
-import codecs
 import ast
+import codecs
+import pickle
+import nltk
+
 
 def add_spaces_between_special_characters(InputText):
     """
@@ -53,3 +54,31 @@ def str_rep_to_list(s):
     :return:
     """
     return ast.literal_eval(s)
+
+
+def string_segementor_on_word_length(content, max_length, language='english'):
+    """
+    segment a long document to several small documents based on the nltk tokenized word length.
+    sentence structure will be kept.
+    :param content: content to be segmented by world length, with complete sentences.
+    :param max_length: document segments' max length.
+    :param language: for the use of nltk, default english.
+    :return: a list of segmented contents
+    """
+    contents = []
+    sentences = nltk.sent_tokenize(content, language)
+    i = 0
+    word_count = 0
+    while i < len(sentences):
+        sentence = sentences[i]
+        current_count = len(nltk.word_tokenize(sentence, language))
+        if word_count + current_count < max_length:
+            document = document + sentence + " "
+            word_count = word_count + current_count
+            i = i + 1
+        else:
+            contents.append(document)
+            word_count = 0
+            document = ""
+    contents.append(document)
+    return contents
