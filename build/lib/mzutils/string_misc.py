@@ -125,8 +125,8 @@ def chinese_sent_tokenize(content):
     idx = 0
     for i in range(length):
         if content[i] in '？！。？！。?!.':
-            sentences.append(content[idx:i + 1])
-            idx = i
+            sentences.append(content[idx:i + 1].lstrip().rstrip())
+            idx = i + 1
     if content[idx:] != "":
-        sentences.append(content[idx:])
+        sentences.append(content[idx:].lstrip().rstrip())
     return sentences
