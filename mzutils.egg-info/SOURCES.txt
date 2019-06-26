@@ -7,6 +7,7 @@ mzutils/numpy_misc.py
 mzutils/os_misc.py
 mzutils/parser.py
 mzutils/probabilities_misc.py
+mzutils/serialize_misc.py
 mzutils/string_misc.py
 mzutils/tsv_misc.py
 mzutils.egg-info/PKG-INFO
