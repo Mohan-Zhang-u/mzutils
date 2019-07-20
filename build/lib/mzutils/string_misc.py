@@ -110,6 +110,8 @@ def chinese_document_segementor_on_word_length(content, max_length):
             contents.append(document)
             word_count = 0
             document = ""
+        if len(contents) > 16000:
+            raise Exception(str(contents[-20:]))
     contents.append(document)
     return contents
 
