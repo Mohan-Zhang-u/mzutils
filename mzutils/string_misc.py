@@ -95,7 +95,7 @@ def chinese_document_segementor_on_word_length(content, max_length):
     :return: a list of segmented contents
     """
     contents = []
-    sentences = chinese_sent_tokenize(content)
+    sentences = chinese_sent_tokenize(content, max_length)
     i = 0
     word_count = 0
     document = ""
@@ -114,18 +114,24 @@ def chinese_document_segementor_on_word_length(content, max_length):
     return contents
 
 
-def chinese_sent_tokenize(content):
+def chinese_sent_tokenize(content, max_length):
     """
     a Chinese sentence tokenizer to solve nltk.sent_tokenize bugs mentioned here: https://github.com/nltk/nltk/issues/1824
     :param content:
     :return:
     """
+    security_number = int(max_length*2/3)
     sentences = []
     length = len(content)
     idx = 0
     for i in range(length):
         if content[i] in '？！。；？！；。?!.;\r\n':
-            sentences.append(content[idx:i + 1].lstrip().rstrip())
+            sentence = content[idx:i + 1].lstrip().rstrip()
+            if len(sentence)>=max_length:
+                sentence_list = [sentence[i:i + security_number] for i in range(0, len(sentence), security_number)]
+                sentences = sentences + sentence_list
+            else:
+                sentences.append(sentence)
             idx = i + 1
     if content[idx:] != "":
         sentences.append(content[idx:].lstrip().rstrip())
