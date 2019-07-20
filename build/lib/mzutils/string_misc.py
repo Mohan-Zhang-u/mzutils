@@ -132,9 +132,11 @@ def chinese_sent_tokenize(content, max_length):
             if len(sentence) >= max_length:
                 sentence_list = [sentence[i:i + security_number] for i in range(0, len(sentence), security_number)]
                 sentences = sentences + sentence_list
+            elif len(sentence) < 5:
+                continue
             else:
                 sentences.append(sentence)
-            idx = i + 1
+        idx = i + 1
     if content[idx:] != "":
         sentences.append(content[idx:].lstrip().rstrip())
     return sentences
