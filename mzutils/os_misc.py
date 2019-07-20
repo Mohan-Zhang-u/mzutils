@@ -129,6 +129,9 @@ def helper_document_segmentor(documents_dir, store_dir, name, max_length, langua
         while i < len(sentences):
             sentence = sentences[i]
             current_count = len(nltk.word_tokenize(sentence, language))
+            if current_count >= max_length:
+                raise Exception("there is a sentence with word length " + str(
+                    current_count) + " , but the maximum document length is " + str(max_length))
             if word_count + current_count < max_length:
                 document = document + sentence + " "
                 word_count = word_count + current_count

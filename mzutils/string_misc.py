@@ -120,14 +120,14 @@ def chinese_sent_tokenize(content, max_length):
     :param content:
     :return:
     """
-    security_number = int(max_length*2/3)
+    security_number = int(max_length * 2 / 3)
     sentences = []
     length = len(content)
     idx = 0
     for i in range(length):
         if content[i] in '？！。；？！；。?!.;\r\n':
             sentence = content[idx:i + 1].lstrip().rstrip()
-            if len(sentence)>=max_length:
+            if len(sentence) >= max_length:
                 sentence_list = [sentence[i:i + security_number] for i in range(0, len(sentence), security_number)]
                 sentences = sentences + sentence_list
             else:
