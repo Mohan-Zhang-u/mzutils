@@ -110,8 +110,8 @@ def chinese_document_segementor_on_word_length(content, max_length):
             contents.append(document)
             word_count = 0
             document = ""
-        if len(contents) > 16000:
-            raise Exception(str(contents[-20:]))
+            if len(contents) > 16000:
+                raise Exception(str(contents[-20:]))
     contents.append(document)
     return contents
 
@@ -122,6 +122,7 @@ def chinese_sent_tokenize(content, max_length):
     :param content:
     :return:
     """
+    content = content.lstrip().rstrip() + "."
     security_number = int(max_length * 2 / 3)
     sentences = []
     length = len(content)
@@ -136,7 +137,5 @@ def chinese_sent_tokenize(content, max_length):
                 continue
             else:
                 sentences.append(sentence)
-        idx = i + 1
-    if content[idx:] != "":
-        sentences.append(content[idx:].lstrip().rstrip())
+            idx = i + 1
     return sentences

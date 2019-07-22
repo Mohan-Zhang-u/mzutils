@@ -110,8 +110,6 @@ def chinese_document_segementor_on_word_length(content, max_length):
             contents.append(document)
             word_count = 0
             document = ""
-        if len(contents) > 16000:
-            raise Exception(str(contents[-20:]))
     contents.append(document)
     return contents
 
@@ -132,11 +130,9 @@ def chinese_sent_tokenize(content, max_length):
             if len(sentence) >= max_length:
                 sentence_list = [sentence[i:i + security_number] for i in range(0, len(sentence), security_number)]
                 sentences = sentences + sentence_list
-            elif len(sentence) < 5:
-                continue
             else:
                 sentences.append(sentence)
-        idx = i + 1
+            idx = i + 1
     if content[idx:] != "":
         sentences.append(content[idx:].lstrip().rstrip())
     return sentences
