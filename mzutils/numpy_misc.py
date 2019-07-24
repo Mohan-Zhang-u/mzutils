@@ -87,7 +87,6 @@ def argmax(l, default_input=0, default_output=0, if_equal='random', decorator_le
     elif if_equal == 'former':
         return re_list[0]
     elif if_equal == 'random':
-        print(re_list)
         return re_list[random.randint(0, len(re_list) - 1)]
     else:
         return re_list
