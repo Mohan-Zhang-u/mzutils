@@ -1,8 +1,39 @@
 import ast
 import codecs
 import pickle
-
+import re
 import nltk
+
+
+def replace_nth_occur(InputText, old, new, n=0, option='only nth'):
+    """
+    https://stackoverflow.com/questions/35091557/replace-nth-occurrence-of-substring-in-string
+    n count from 0.
+    This function replaces occurrences of string 'old' with string 'new'.
+    There are three types of replacement of string 'old':
+    1) 'only nth' replaces only nth occurrence (default).
+    2) 'all left' replaces nth occurrence and all occurrences to the left.
+    3) 'all right' replaces nth occurrence and all occurrences to the right.
+    if n out of bound, do nothing.
+    """
+    n=n+1
+    if option == 'only nth':
+        left_join = old
+        right_join = old
+    elif option == 'all left':
+        left_join = new
+        right_join = old
+    elif option == 'all right':
+        left_join = old
+        right_join = new
+    else:
+        print("Invalid option. Please choose from: 'only nth' (default), 'all left' or 'all right'")
+        return None
+    groups = InputText.split(old)
+    if groups[:n]!=[] and groups[n:]!=[]:
+      nth_split = [left_join.join(groups[:n]), right_join.join(groups[n:])]
+      return new.join(nth_split)
+    return InputText
 
 
 def add_spaces_between_special_characters(InputText):
