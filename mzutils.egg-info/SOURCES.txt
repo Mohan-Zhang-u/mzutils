@@ -10,6 +10,7 @@ mzutils/parser.py
 mzutils/probabilities_misc.py
 mzutils/serialize_misc.py
 mzutils/string_misc.py
+mzutils/torch_misc.py
 mzutils.egg-info/PKG-INFO
 mzutils.egg-info/SOURCES.txt
 mzutils.egg-info/dependency_links.txt
