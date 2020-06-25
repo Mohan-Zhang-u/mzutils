@@ -170,3 +170,34 @@ def chinese_sent_tokenize(content, max_length):
                 sentences.append(sentence)
             idx = i + 1
     return sentences
+
+
+def detag(sentences, tags):
+    """
+    remove all tag strings out of all sentences
+    :param sentences: a list of string sentences
+    :param sentences: a list of string tags
+    :return: 
+    """
+    re_sentences = []
+    for sentence in sentences:
+        re_sent = sentence
+        for tag in tags:
+            re_sent = re_sent.replace(tag, "")
+        re_sentences.append(re_sent)
+    return re_sentences
+
+
+def file_detag(file_path, tags):
+    """
+    remove all tag strings from the file
+    :param file_path: file path
+    :param sentences: a list of string tags
+    :return: 
+    """
+    rfp = codecs.open(file_path, 'r')
+    sentences = rfp.readlines()
+    rfp.close()
+    sentences = detag(sentences, tags)
+    with open(file_path, 'w') as wfp:
+        wfp.writelines(sentences)
