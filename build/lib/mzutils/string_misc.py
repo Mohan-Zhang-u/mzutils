@@ -201,3 +201,78 @@ def file_detag(file_path, tags):
     sentences = detag(sentences, tags)
     with open(file_path, 'w') as wfp:
         wfp.writelines(sentences)
+
+
+def char_in_language(in_char, expected=None):
+    """
+    :param in_char: single utf-8 input char
+    :param expected: whether the char is in expected range or not.
+    :return: 'num' (numbers), 'alphabet' (english alphabets), 'ascii' (ascii strings) the lanuge code. If expected range is provided, returns whether the char is in the expected range or not.
+    https://www.andiamo.co.uk/resources/iso-language-codes/
+    >>> print(char_in_language('1', 'alphabet'))
+    False
+    >>> print(char_in_language('a', 'ascii'))
+    True
+    >>> print(char_in_language('a'))
+    alphabet
+    >>> print(char_in_language('时', 'num'))
+    False
+    """
+    assert(len(in_char)==1)
+    in_range = ''
+    in_char = ord(in_char)
+    if in_char >= ord('\u0000') and in_char<=ord('\u007f'):
+        in_range = 'ascii'
+        if expected == in_range:
+            return True
+    if in_char >= ord('\u0030') and in_char<= ord('\u0039'):
+        in_range = 'num'
+        if expected == in_range:
+            return True
+        if expected is not None and expected != in_range:
+            return False
+    if (in_char >= ord('\u0041') and in_char <= ord('\u005a')) or (in_char >= ord('\u0061') and in_char <= ord('\u007a')):
+        in_range = 'alphabet'
+        if expected == in_range:
+            return True
+        if expected is not None and expected != in_range:
+            return False
+    if expected in ['ascii', 'num', 'alphabet']:
+        return False
+    if in_range != '':
+        return in_range
+    # above check for ascii ranges.
+
+    if in_char >= ord('\u4e00') and in_char <= ord('\u9fa5'):
+        in_range = 'zh'
+        if expected is not None:
+            if expected == in_range:
+                return True
+            else:
+                return False
+        else:
+            return in_range
+    if in_char >= ord('\u4e00') and in_char <= ord('\u9fa5'):
+        in_range = 'zh'
+        if expected is not None:
+            if expected == in_range:
+                return True
+            else:
+                return False
+        else:
+            return in_range
+    if in_char >= ord('\u0800') and in_char <= ord('\u4dff'):
+        in_range = 'ja'
+        if expected is not None:
+            if expected == in_range:
+                return True
+            else:
+                return False
+        else:
+            return in_range
+    else:
+        if expected is not None:
+            return False
+        else:
+            return ''
+        
