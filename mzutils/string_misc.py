@@ -275,4 +275,33 @@ def char_in_language(in_char, expected=None):
             return False
         else:
             return ''
-        
+
+
+def string_in_language(in_string, expected=None):
+    """
+    :param in_char: utf-8 input string
+    :param expected: language
+    :return: true or false (full ascii string is going to be false when expected is not ascii)
+    """
+    
+    ascii_matches = re.findall(r'[\u0000-\u007f]+', in_string)
+    if len(ascii_matches) > 0 and in_string == ascii_matches[0]:
+        if expected == 'ascii':
+            return True
+        else:
+            return False
+    
+    if expected == 'zh':
+        matches = re.findall(r'[\u0000-\u007f\u4e00-\u9fff]+', in_string)
+        if len(matches) > 0 and in_string == matches[0]:
+            return True
+        else:
+            return False
+    if expected == 'ja':
+        matches = re.findall(r'[\u0000-\u007f\u0800-\u4e00]+', in_string)
+        if len(matches) > 0 and in_string == matches[0]:
+            return True
+        else:
+            return False
+    else:
+        return False
