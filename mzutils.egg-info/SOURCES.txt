@@ -4,6 +4,7 @@ mzutils/__init__.py
 mzutils/ctsv_misc.py
 mzutils/data_preprocessing.py
 mzutils/json_misc.py
+mzutils/list_misc.py
 mzutils/numpy_misc.py
 mzutils/os_misc.py
 mzutils/parser.py
