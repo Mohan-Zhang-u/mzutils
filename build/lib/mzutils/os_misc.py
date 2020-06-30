@@ -6,6 +6,7 @@ import tarfile
 import time
 import zipfile
 from inspect import getfullargspec
+from list_misc import *
 
 # dependencies
 import nltk
@@ -223,6 +224,28 @@ def loop_through_store_files_to_list(looped_dir, encoding="utf-8"):
         elif os.path.isfile(thing):
             with codecs.open(thing, 'r', encoding) as fp:
                 filecontent = fp.read()
+                re_list.append(filecontent)
+    return re_list
+
+
+def loop_through_store_lines_to_list(looped_dir, encoding="utf-8"):
+    """
+    function to loop through nested directories and store the lines of all files into a list.
+    This function does not care about symbolic link inside the nested directories.
+    :param looped_dir:
+    :param encoding:
+    :return: list
+    """
+    re_list = []
+    if not os.path.isdir(looped_dir):
+        raise Exception("looped_dir: a directory.")
+    for thing in os.listdir(looped_dir):
+        thing = os.path.join(looped_dir, thing)
+        if os.path.isdir(thing):
+            re_list = re_list + loop_through_store_files_to_list(thing, encoding)
+        elif os.path.isfile(thing):
+            with codecs.open(thing, 'r', encoding) as fp:
+                filecontent = fp.readlines()
                 re_list.append(filecontent)
     return re_list
 
