@@ -186,6 +186,24 @@ def loop_through_copy_files_to_one_dir(looped_dir, target_dir, include_link=Fals
     return
 
 
+def loop_through_return_abs_file_path(looped_dir):
+    """
+    function to loop through nested directories and return file absolute path in a list.
+    :param looped_dir:
+    :return: list
+    """
+    re_list = []
+    if not os.path.isdir(looped_dir):
+        raise Exception("looped_dir: a directory.")
+    for thing in os.listdir(looped_dir):
+        thing = os.path.join(looped_dir, thing)
+        thing = os.path.abspath(thing)
+        if os.path.isdir(thing):
+            re_list = re_list + loop_through_return_abs_file_path(thing)
+        elif os.path.isfile(thing):
+            re_list.append(thing)
+
+
 def loop_through_store_files_to_list(looped_dir, encoding="utf-8"):
     """
     function to loop through nested directories and store the content of all files into a list separately.
