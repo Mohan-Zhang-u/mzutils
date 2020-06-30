@@ -6,7 +6,7 @@ import tarfile
 import time
 import zipfile
 from inspect import getfullargspec
-from list_misc import *
+from .list_misc import *
 
 # dependencies
 import nltk
@@ -246,7 +246,7 @@ def loop_through_store_lines_to_list(looped_dir, encoding="utf-8"):
         elif os.path.isfile(thing):
             with codecs.open(thing, 'r', encoding) as fp:
                 filecontent = fp.readlines()
-                re_list.append(filecontent)
+                re_list += filecontent
     return re_list
 
 
