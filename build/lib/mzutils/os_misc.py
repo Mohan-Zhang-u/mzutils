@@ -202,6 +202,7 @@ def loop_through_return_abs_file_path(looped_dir):
             re_list = re_list + loop_through_return_abs_file_path(thing)
         elif os.path.isfile(thing):
             re_list.append(thing)
+    return re_list
 
 
 def loop_through_store_files_to_list(looped_dir, encoding="utf-8"):
