@@ -151,7 +151,7 @@ def find_max_sub_list_length(lst: list):
 
 
 
-def beautify_csv_lines(lst: list):
+def beautify_csv_lines_horizontal(lst: list):
     """
     the list contain sub_lists with different lengths. This function helps to write them with paddings.
     return back list of sub_lists with the same length.
@@ -161,3 +161,15 @@ def beautify_csv_lines(lst: list):
     for i in range(len(lst)):
         lst[i] = mzutils.list_misc.pad_list(lst[i], max_len)
     return lst
+
+
+def beautify_csv_lines(lst: list):
+    """
+    the list contain sub_lists with different lengths. This function helps to write them with paddings.
+    return back list of sub_lists of rows to write to csv.
+    """
+    curr_lst = []
+    lst = beautify_csv_lines_horizontal(lst)
+    for i in range(len(lst[0])):
+        curr_lst.append([lst[j][i] for j in range(len(lst))])
+    return curr_lst
