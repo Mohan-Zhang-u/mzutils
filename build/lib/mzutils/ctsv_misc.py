@@ -2,6 +2,7 @@ import codecs
 import csv
 import os
 import sys
+import mzutils.list_misc
 
 
 def write_tsv(file_path, rows):
@@ -132,3 +133,31 @@ def save_tsv_as_csv(tsv_file, csv_file=None):
             csv_writer = csv.writer(cfp, delimiter=',')
             for row in tsv_reader:
                 csv_writer.writerow(row)
+
+
+def find_max_sub_list_length(lst: list):
+    """
+    pick the left longest sub_list
+    """
+    if len(lst) == 0:
+        return 0, None
+    max_len = 0
+    max_sub_list = lst[0]
+    for sub_list in lst:
+        if len(sub_list) > max_len:
+            max_len = len(sub_list)
+            max_sub_list = sub_list
+    return max_len, max_sub_list
+
+
+
+def beautify_csv_lines(lst: list):
+    """
+    the list contain sub_lists with different lengths. This function helps to write them with paddings.
+    return back list of sub_lists with the same length.
+    """
+    lst = lst.copy()
+    max_len, _ = find_max_sub_list_length(lst)
+    for i in range(len(lst)):
+        lst[i] = mzutils.list_misc.pad_list(lst[i], max_len)
+    return lst
