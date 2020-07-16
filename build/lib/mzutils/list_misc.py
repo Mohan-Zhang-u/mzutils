@@ -14,3 +14,10 @@ def pad_list(lst: list, length: int, element=''):
         return lst[:length]
     
     return lst + [element for _ in range(length - len(lst))]
+
+
+def split_list_with_len(lst: list, length: int):
+    """
+    return a list of sublists with len == length (except the last one)
+    """
+    return [lst[i:i + length] for i in range(0, len(lst), length)]
