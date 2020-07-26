@@ -305,3 +305,24 @@ def string_in_language(in_string, expected=None):
             return False
     else:
         return False
+
+
+def nltk_english_pos_tags():
+    """
+    return a dictionary of general classes of pos tags used by nltk.pos_tag.
+    https://pythonprogramming.net/natural-language-toolkit-nltk-part-speech-tagging/
+    """
+    digits = ('CD',)
+    foreign = ('FW',)
+    adjective = ('JJ', 'JJR', 'JJS')
+    noun = ('NN', 'NNS', 'NNP', 'NNPS')
+    adverb = ('RB', 'RBR', 'RBS', 'RP')
+    verb = ('VB', 'VBD', 'VBG', 'VBN', 'VBP', 'VBZ')
+    entities = digits + foreign + adjective + noun + adverb + verb
+
+    pronoun = ('PDT', 'POS', 'PRP', 'PRP$')
+    wh = ('WDT', 'WP', 'WP$', 'WRB')
+    meaningless_along = ('CC', 'DT', 'EX', 'IN', 'LS', 'MD', 'TO', 'UH') + pronoun + wh
+
+    return {'entities': entities, 'meaningless_along': meaningless_along, 'digits': digits, 'foreign': foreign, 'adjective': adjective, 'noun': noun, 'adverb': adverb, 'verb': verb, 'pronoun': pronoun, 'wh': wh}
+
