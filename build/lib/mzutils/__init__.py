@@ -10,3 +10,4 @@ from .serialize_misc import *
 from .torch_misc import *
 from .tf_misc import *
 from .list_misc import *
+from .nlp_metrics import *

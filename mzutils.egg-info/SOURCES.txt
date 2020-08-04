@@ -5,6 +5,7 @@ mzutils/ctsv_misc.py
 mzutils/data_preprocessing.py
 mzutils/json_misc.py
 mzutils/list_misc.py
+mzutils/nlp_metrics.py
 mzutils/numpy_misc.py
 mzutils/os_misc.py
 mzutils/parser.py
