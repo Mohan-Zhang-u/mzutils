@@ -1,4 +1,5 @@
 import copy
+import numpy as np
 from nltk.translate.bleu_score import corpus_bleu
 from nltk.tokenize import word_tokenize
 import rouge  # from https://github.com/Mohan-Zhang-u/py-rouge.git
