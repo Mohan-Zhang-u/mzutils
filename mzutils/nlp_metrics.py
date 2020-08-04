@@ -12,8 +12,8 @@ def translation_paraphrase_evaluation(sources, hypos, refs, print_rouge=True, ma
     """
     to evalute generated paraphrase or translations with BlEU and ROUGE scores.
     :param sources: source sentence to start with. e.g. ['Young woman with sheep on straw covered floor .', 'A man who is walking across the street .']
-    :param hypos:
-    :param refs:
+    :param hypos: generated hypotheses. should share the same shape with sources. (each source, generate one hypothesis sentence.) e.g. ['Young woman with sheep on straw covered floor .', 'A man who is walking across the street now.']
+    :param refs: list of list of sentences. For each source, given a list of possible references. e.g. [['Young woman with sheep on straw covered floor .', 'Young woman on the floor .'] ['A man who is walking across the street now.', 'A man walking across the street.']]
     :return:
     """
     
