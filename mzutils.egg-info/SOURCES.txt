@@ -2,10 +2,8 @@ README.md
 setup.py
 mzutils/__init__.py
 mzutils/ctsv_misc.py
-mzutils/data_preprocessing.py
 mzutils/json_misc.py
 mzutils/list_misc.py
-mzutils/nlp_metrics.py
 mzutils/numpy_misc.py
 mzutils/os_misc.py
 mzutils/parser.py
@@ -19,3 +17,7 @@ mzutils.egg-info/SOURCES.txt
 mzutils.egg-info/dependency_links.txt
 mzutils.egg-info/requires.txt
 mzutils.egg-info/top_level.txt
+mzutils/nlp_tasks/__init__.py
+mzutils/nlp_tasks/data_preprocessing.py
+mzutils/nlp_tasks/ner_misc.py
+mzutils/nlp_tasks/nlp_metrics.py

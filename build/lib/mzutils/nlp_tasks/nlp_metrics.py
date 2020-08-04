@@ -1,7 +1,8 @@
 import copy
+import numpy as np
 from nltk.translate.bleu_score import corpus_bleu
 from nltk.tokenize import word_tokenize
-import rouge  # from https://github.com/Mohan-Zhang-u/py-rouge.git
+import rouge  # pip install git+https://github.com/Mohan-Zhang-u/py-rouge.git
 
 
 def rouge_helper_prepare_results(m, p, r, f):
