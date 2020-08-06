@@ -64,8 +64,6 @@ def labels_from_subword_labels(tokens, bert_labels, tokenizer, bert_special_toke
     if bert_special_tokens:
         bert_labels = bert_labels[1:-1] # remove '[CLS]' and '[SEP]'
     subwords = list(map(tokenizer.tokenize, tokens))
-    print(bert_labels)
-    print(subwords)
     # now, select correct labels according to subword length. Always select the first given label for each word.
     curr_working_idx = 0
     labels = []
