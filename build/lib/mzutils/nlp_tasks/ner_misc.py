@@ -20,7 +20,7 @@ def subword_tokenize_labels(tokens, labels, tokenizer, bert_special_tokens=True)
     2 -> I continued
     3 -> X sub-words that are not tagged.
     
-    :param tokenizer: e.g. transformers.BertTokenizer.from_pretrained('bert-base-uncased')
+    :param tokenizer: e.g. transformers.BertTokenizer.from_pretrained('bert-base-cased')
 
     :param bert_special_tokens: add '[CLS]' and '[SEP]' or not.
     
@@ -55,7 +55,7 @@ def labels_from_subword_labels(tokens, bert_labels, tokenizer, bert_special_toke
     2 -> I continued
     3 -> X sub-words that are not tagged.
     
-    :param tokenizer: e.g. transformers.BertTokenizer.from_pretrained('bert-base-uncased')
+    :param tokenizer: e.g. transformers.BertTokenizer.from_pretrained('bert-base-cased')
 
     :param bert_special_tokens: add '[CLS]' and '[SEP]' or not.
     
@@ -74,3 +74,15 @@ def labels_from_subword_labels(tokens, bert_labels, tokenizer, bert_special_toke
         curr_working_idx += len(subword_list)
     assert len(tokens) == len(labels)
     return tokens, labels
+
+
+def rejoin_bert_tokenized_sentence(sentence):
+    """
+    original sentence is "The Smiths' used their son's car."
+    tokenizer.basic_tokenizer.tokenize("The Smiths' used their son's car.") gives ['the', 'smiths', "'", 'used', 'their', 'son', "'", 's', 'car', '.']
+    fine_text returns "the smiths ' used their son ' s car ."
+    tokenizer.basic_tokenizer.tokenize(fine_text) gives ['the', 'smiths', "'", 'used', 'their', 'son', "'", 's', 'car', '.'] again.
+    """
+    text = ' '.join([x for x in sentence])
+    fine_text = text.replace(' ##', '')
+    return fine_text
