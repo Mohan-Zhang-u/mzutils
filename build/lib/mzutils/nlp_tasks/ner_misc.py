@@ -13,18 +13,18 @@ def subword_tokenize_labels(tokens, labels, tokenizer, bert_special_tokens=True)
     tokens = tokenizer.basic_tokenizer.tokenize("John Johanson lives in Ramat Gan Gang.")
     tokens = nltk.word_tokenize("John Johanson lives in Ramat Gan Gang.")
 
-    :param labels: ['B', 'I', 'O', 'O', 'B', 'I', 'I', 'O']. NER tokens. 
+    :param labels: [1, 2, 0, 0, 1, 2, 2, 0]. NER tokens. 
     labels:
-    O out
-    B beginning
-    I continued
-    X sub-words that are not tagged.
+    0 -> O out
+    1 -> B beginning
+    2 -> I continued
+    3 -> X sub-words that are not tagged.
     
     :param tokenizer: e.g. transformers.BertTokenizer.from_pretrained('bert-base-uncased')
 
     :param bert_special_tokens: add '[CLS]' and '[SEP]' or not.
     
-    :return: (['[CLS]', 'john', 'johan', '##son', 'lives', 'in', 'rama', '##t', 'gan', 'gang', '.', '[SEP]'], [101, 2198, 13093, 3385, 3268, 1999, 14115, 2102, 25957, 6080, 1012, 102], array([ 1,  2,  4,  5,  6,  8,  9, 10]), ['O', 'B', 'I', 'X', 'O', 'O', 'B', 'X', 'I', 'I', 'O', 'O'])
+    :return: (['[CLS]', 'john', 'johan', '##son', 'lives', 'in', 'rama', '##t', 'gan', 'gang', '.', '[SEP]'], [101, 2198, 13093, 3385, 3268, 1999, 14115, 2102, 25957, 6080, 1012, 102], array([ 1,  2,  4,  5,  6,  8,  9, 10]), [0, 1, 2, 3, 0, 0, 1, 3, 2, 2, 0, 0])
     """
     assert len(tokens) == len(labels)
 
@@ -34,8 +34,8 @@ def subword_tokenize_labels(tokens, labels, tokenizer, bert_special_tokens=True)
     if bert_special_tokens:
         subwords = ['[CLS]'] + subwords + ['[SEP]']  # 
     token_start_idxs = 1 + np.cumsum([0] + subword_lengths[:-1])
-    bert_labels = [[label] + (sublen-1) * ["X"] for sublen, label in zip(subword_lengths, labels)]
-    bert_labels = ["O"] + list(helper_flatten(bert_labels)) + ["O"]
+    bert_labels = [[label] + (sublen-1) * [3] for sublen, label in zip(subword_lengths, labels)]
+    bert_labels = [0] + list(helper_flatten(bert_labels)) + [0]
     encoded_subwords = tokenizer.encode(subwords, add_special_tokens=False)
     assert len(subwords) == len(bert_labels)
 
@@ -48,18 +48,18 @@ def labels_from_subword_labels(tokens, bert_labels, tokenizer, bert_special_toke
     tokens = tokenizer.basic_tokenizer.tokenize("John Johanson lives in Ramat Gan.")
     tokens = nltk.word_tokenize("John Johanson lives in Ramat Gan.")
 
-    :param bert_labels: ['B', 'I', 'X', 'O', 'O', 'B', 'X', 'I', 'I', 'O']. NER tokens from subword_tokenize_labels. 
+    :param bert_labels: [0, 1, 2, 3, 0, 0, 1, 3, 2, 2, 0, 0]. NER tokens from subword_tokenize_labels. 
     labels:
-    O out
-    B beginning
-    I continued
-    X sub-words that are not tagged.
+    0 -> O out
+    1 -> B beginning
+    2 -> I continued
+    3 -> X sub-words that are not tagged.
     
     :param tokenizer: e.g. transformers.BertTokenizer.from_pretrained('bert-base-uncased')
 
     :param bert_special_tokens: add '[CLS]' and '[SEP]' or not.
     
-    :return: (['John', 'Johanson', 'lives', 'in', 'Ramat', 'Gan', 'Gang', '.'], ['B', 'I', 'O', 'O', 'B', 'I', 'I', 'O'])
+    :return: (['John', 'Johanson', 'lives', 'in', 'Ramat', 'Gan', 'Gang', '.'], [1, 2, 0, 0, 1, 2, 2, 0])
     """
     if bert_special_tokens:
         bert_labels = bert_labels[1:-1] # remove '[CLS]' and '[SEP]'
@@ -74,4 +74,3 @@ def labels_from_subword_labels(tokens, bert_labels, tokenizer, bert_special_toke
         curr_working_idx += len(subword_list)
     assert len(tokens) == len(labels)
     return tokens, labels
-    
