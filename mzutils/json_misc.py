@@ -2,11 +2,11 @@ import codecs
 import json
 
 
-def dump_json(file_path, dict):
+def dump_json(dict, file_path):
     """
-
-    :param file_path:
+    
     :param dict:
+    :param file_path:
     :return:
     """
     with codecs.open(file_path, 'w+', encoding='utf-8') as fp:
