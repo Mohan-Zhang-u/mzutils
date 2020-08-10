@@ -2,7 +2,7 @@ import codecs
 import json
 
 
-def dump_config(file_path, dict):
+def dump_json(file_path, dict):
     """
 
     :param file_path:
@@ -13,7 +13,7 @@ def dump_config(file_path, dict):
         json.dump(dict, fp)
 
 
-def load_config(file_path):
+def load_json(file_path):
     """
 
     :param file_path:
