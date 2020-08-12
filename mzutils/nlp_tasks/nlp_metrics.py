@@ -33,9 +33,12 @@ def translation_paraphrase_evaluation(sources, hypos, refs, print_scores=True, m
                             weight_factor=rouge_weight_factor,
                             stemming=rouge_stemming)
         
-        compare_dict = {'hypos':hypos, 'sources':sources, 'sources_refs_diversity_negative': sources_refs}
+        compare_dict = {'hypos':hypos, 'sources':sources, 'sources_refs_diversity_negative': hypos}
         for key in compare_dict:
-            scores = evaluator.get_scores(compare_dict[key], refs)
+            if key == 'sources_refs_diversity_negative':
+                scores = evaluator.get_scores(compare_dict[key], sources_refs)
+            else:
+                scores = evaluator.get_scores(compare_dict[key], refs)
             metrics_dict[key+'_rouge_'+aggregator] = scores
 
             if print_scores:
