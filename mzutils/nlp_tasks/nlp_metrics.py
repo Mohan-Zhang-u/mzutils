@@ -88,6 +88,6 @@ def translation_paraphrase_evaluation(sources, hypos, refs, print_scores=True, m
 
     if print_scores:
         for sc in ["bleu_1", "bleu_2", "bleu_3", "bleu_4", "source_sentence_bleu_1", "source_sentence_bleu_2", "source_sentence_bleu_3", "source_sentence_bleu_4", "sources_as_refs_diversity_negative_bleu_1", "sources_as_refs_diversity_negative_bleu_2", "sources_as_refs_diversity_negative_bleu_3", "sources_as_refs_diversity_negative_bleu_4"]:
-            print(sc,":", metrics_dict[sc])
+            print(sc,"(percents):", round(metrics_dict[sc], 4) * 100)
 
     return metrics_dict
