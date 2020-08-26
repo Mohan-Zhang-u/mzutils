@@ -5,6 +5,18 @@ def remove_elements_from_list(lst: list, elements: list):
     return [e for e in lst if e not in elements]
 
 
+def pop_indices(lst, indices):
+    """
+    pop the lst given a list or tuple of indices.
+    this function modifies lst directly inplace.
+    >>> pop_indices([1,2,3,4,5,6], [0,4,5])
+    >>> [2, 3, 4]
+    """
+    for n in sorted(indices, reverse=True):
+        lst.pop(n)
+    return lst
+
+
 def pad_list(lst: list, length: int, element=''):
     """
     pad a list to length with elements.
