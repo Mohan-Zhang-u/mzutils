@@ -4,7 +4,7 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 setuptools.setup(
     name='mzutils',
-    version='0.1305',
+    version='0.1306',
     author="Mohan Zhang",
     author_email="mohan.zhang.mz@gmail.com",
     description="A Mohan Zhang's utility package",
@@ -18,7 +18,11 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     install_requires=[
-        'numpy'
+        'numpy',
+        'nltk',
+        'tqdm',
+        'hanlp',
+        'pytorch_model_summary',
     ]
     # std lib: 'os','shutil','time','codecs'
 )
