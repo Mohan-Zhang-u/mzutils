@@ -106,15 +106,22 @@ def string_segementor_on_word_length(content, max_length, language='english'):
         sentence = sentences[i]
         current_count = len(nltk.word_tokenize(sentence, language))
         if current_count >= max_length:
-            raise Exception("there is a sentence with word length " + str(current_count) + " , but the maximum document length is " + str(max_length))
-        if word_count + current_count < max_length:
             document = document + sentence + " "
-            word_count = word_count + current_count
-            i = i + 1
-        else:
             contents.append(document)
             word_count = 0
             document = ""
+            i = i + 1
+            print("Warning: "+ "there is a sentence with word length " + str(current_count) + " , but the maximum document length is " + str(max_length))
+            continue
+            # raise Exception("there is a sentence with word length " + str(current_count) + " , but the maximum document length is " + str(max_length))
+        if word_count + current_count >= max_length:
+            contents.append(document)
+            word_count = 0
+            document = ""
+        else:
+            document = document + sentence + " "
+            word_count = word_count + current_count
+            i = i + 1
     contents.append(document)
     return contents
 
