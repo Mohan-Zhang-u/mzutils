@@ -2,6 +2,7 @@ python setup.py bdist_wheel
 python -m twine upload dist/*
 pip install --U mzutils
 
+#TODO: change import mzutils.list_misc
 
 
 #Installation:
