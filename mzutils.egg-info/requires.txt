@@ -1,1 +1,5 @@
 numpy
+nltk
+tqdm
+hanlp
+pytorch_model_summary
