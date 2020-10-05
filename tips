@@ -3,6 +3,8 @@ python -m twine upload dist/*
 pip install --U mzutils
 
 #TODO: change import mzutils.list_misc
+#TODO: change import mzutils.json_misc
+#TODO: change import mzutils.os_misc
 
 
 #Installation:
