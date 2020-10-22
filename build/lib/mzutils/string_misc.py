@@ -133,6 +133,7 @@ def chinese_document_segementor_on_word_length(content, max_length):
     :param content: content to be segmented by world length, with complete sentences.
     :param max_length: document segments' max length.
     :return: a list of segmented contents
+    TODO: this will have some over length issue due to the security_number.
     """
     contents = []
     sentences = chinese_sent_tokenize(content, max_length)
