@@ -34,6 +34,33 @@ def basename_and_extension(file_path):
     return os.path.splitext(os.path.basename(file_path))
 
 
+def get_things_in_loc(in_path, just_files=True):
+    """
+    in_path can be file path or dir path.
+    This function return a list of file paths
+    in in_path if in_path is a dir, or within the 
+    parent path of in_path if it is not a dir.
+    just_files=False will let the function go recursively
+    into the subdirs.
+    """
+    # TODO: check for file
+    if not os.path.exists(in_path):
+        print(str(in_path) + " does not exists!")
+        return
+    re_list = []
+    if not os.path.isdir(in_path):
+        in_path = parent_dir_and_name(in_path)[0]
+
+    for name in os.listdir(in_path):
+        name_path = os.path.abspath(os.path.join(in_path, name))
+        if os.path.isfile(name_path):
+            re_list.append(name_path)
+        elif not just_files:
+            if os.path.isdir(name_path):
+                re_list += get_things_in_loc(name_path, just_files)
+    return re_list
+
+
 def clean_dir(dir_path, just_files=True):
     """
     Clean up a directory.
