@@ -2,9 +2,6 @@ python setup.py bdist_wheel
 python -m twine upload dist/*
 pip install --U mzutils
 
-#TODO: change import mzutils.list_misc
-#TODO: change import mzutils.json_misc
-#TODO: change import mzutils.os_misc
 
 
 #Installation:
@@ -14,7 +11,7 @@ pip install --upgrade pip setuptools wheel
 pip install tqdm
 pip install --user --upgrade twine
 
-then, create setup.py
+then, create setup.py (edit the version)
 
 then, create and edit .pypirc in your home directory;
 [distutils]

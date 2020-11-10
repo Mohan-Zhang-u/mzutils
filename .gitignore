@@ -1,2 +1,6 @@
 .idea
+.vscode
+build
+mzutils.egg-info
+dist
 *.whl
