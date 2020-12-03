@@ -2,7 +2,7 @@ import codecs
 import json
 
 
-def dump_json(dict, file_path):
+def dump_json(dictionary, file_path):
     """
     
     :param dict:
@@ -10,7 +10,7 @@ def dump_json(dict, file_path):
     :return:
     """
     with codecs.open(file_path, 'w+', encoding='utf-8') as fp:
-        json.dump(dict, fp)
+        json.dump(dictionary, fp)
 
 
 def load_json(file_path):
