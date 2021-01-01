@@ -1,4 +1,5 @@
 import torch
+import sys
 
 
 def model_params(model: torch.nn.Module) -> int:
@@ -51,3 +52,10 @@ def conv2d_output_shape(out_channels: int, H_in: int, W_in: int, kernel_size: in
                                        conv2d_select_correct_element(stride, 1), padding[2:4],
                                        conv2d_select_correct_element(dilation, 1))
         return out_channels, H, W
+
+
+def check_tensor_occupied_memory(t):
+    """
+    this is a reminder function.
+    """
+    print(sys.getsizeof(t.storage()))
