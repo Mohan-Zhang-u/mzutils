@@ -7,7 +7,7 @@ setuptools.setup(
     version='0.1322',
     author="Mohan Zhang",
     author_email="mohan.zhang.mz@gmail.com",
-    description="A Mohan Zhang's utility package",
+    description="Mohan Zhang's toolkit",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/Mohan-Zhang-u/mzutils",
