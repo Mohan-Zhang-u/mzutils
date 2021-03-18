@@ -1,6 +1,6 @@
 python setup.py bdist_wheel
 python -m twine upload dist/*
-pip install --U mzutils
+pip install mzutils -U
 
 
 
