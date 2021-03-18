@@ -61,6 +61,31 @@ def get_things_in_loc(in_path, just_files=True):
     return re_list
 
 
+def get_checkpoints_in_loc(in_path, keywords=['checkpoint-'], files_or_folders='folders'):
+    """
+    This function will loop through in_path to find all files/folders that includes all keywords 
+    if files_or_folders='files'/'folders'. 
+    again, in_path can be file path or dir path.
+    The function is meant to grab all checkpoint-XXXX in a folder.
+    """
+    if not os.path.exists(in_path):
+        print(str(in_path) + " does not exists!")
+        return
+    re_list = []
+    if not os.path.isdir(in_path):
+        in_path = parent_dir_and_name(in_path)[0]
+    
+    for name in os.listdir(in_path):
+        name_path = os.path.abspath(os.path.join(in_path, name))
+        pattern_truth = all([keyword in name_path for keyword in keywords])
+        if pattern_truth:
+            if os.path.isfile(name_path) and files_or_folders=='files':
+                re_list.append(name_path)
+            elif os.path.isdir(name_path) and files_or_folders=='folders':
+                re_list.append(name_path)
+    return re_list
+
+
 def clean_dir(dir_path, just_files=True):
     """
     Clean up a directory.
