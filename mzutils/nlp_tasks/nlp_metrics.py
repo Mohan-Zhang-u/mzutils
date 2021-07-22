@@ -2,8 +2,7 @@ import copy
 import numpy as np
 from nltk.translate.bleu_score import corpus_bleu
 from nltk.tokenize import word_tokenize
-import rouge  # pip install git+https://github.com/Mohan-Zhang-u/py-rouge.git
-import hanlp
+
 
 
 def rouge_helper_prepare_results(m, p, r, f):
@@ -37,6 +36,7 @@ def translation_paraphrase_evaluation_english_tagpa(sources, hypos, refs, print_
     :param refs: list of list of sentences. For each source, given a list of possible references. e.g. [['Young woman with sheep on straw covered floor .', 'Young woman on the floor .'] ['A man who is walking across the street now.', 'A man walking across the street.']]
     :return: a dictionary of scores.
     """
+    import rouge  # pip install git+https://github.com/Mohan-Zhang-u/py-rouge.git
     sources_refs = [[sentence] for sentence in sources]  # we use source as the reference to compute a negative score, in order to measure the diversity of paraphrasing.
 
     metrics_dict = {}
@@ -124,6 +124,7 @@ def translation_paraphrase_evaluation(sources, hypos, refs, sentence_preproce_fu
     :param sentence_preproce_function: a function that will be applied to all sentences in sources, hypos, refs
     :return: a dictionary of scores.
     """
+    import rouge  # pip install git+https://github.com/Mohan-Zhang-u/py-rouge.git
     assert(isinstance(sources, list))
     assert(isinstance(sources[0], str))
     assert(isinstance(hypos, list))
@@ -245,6 +246,7 @@ def translation_paraphrase_evaluation_chinese(sources, hypos, refs, sentence_pre
     :param word_segmentor: 'character' means seperate each character to be a word, 'hanlp' means an hanlp chinese tokenizer.
     :return: a dictionary of scores.
     """
+    import rouge  # pip install git+https://github.com/Mohan-Zhang-u/py-rouge.git
     assert(isinstance(sources, list))
     assert(isinstance(sources[0], str))
     assert(isinstance(hypos, list))
@@ -291,6 +293,7 @@ def translation_paraphrase_evaluation_chinese(sources, hypos, refs, sentence_pre
                 sources_ref[i] = word_tokenize(sources_ref[i])
 
     elif word_segmentor == 'hanlp':
+        import hanlp
         word_tokenize = hanlp.load('LARGE_ALBERT_BASE')
 
         bleu_sources = []

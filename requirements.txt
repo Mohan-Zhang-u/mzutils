@@ -2,5 +2,7 @@ numpy
 nltk
 torch
 tqdm
-hanlp
-git+https://github.com/Mohan-Zhang-u/py-rouge.git
+# selective installations:
+# hanlp
+# tensorflow
+# git+https://github.com/Mohan-Zhang-u/py-rouge.git
