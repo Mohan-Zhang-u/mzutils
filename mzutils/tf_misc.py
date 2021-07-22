@@ -1,7 +1,3 @@
-import tensorflow as tf
-from tensorflow.python.framework import ops as framework_ops
-from tensorflow.python.ops import gen_math_ops
-
 def torchlike_gather(params, axis, indices, name=None):
     """
     an inriched version of torch.gather in tf.
@@ -36,10 +32,10 @@ def torchlike_gather(params, axis, indices, name=None):
     Raises:
       ValueError: if `indices` has an unknown shape.
     """
-
-    with framework_ops.name_scope(name):
-        indices = framework_ops.convert_to_tensor(indices, name="indices")
-        params = framework_ops.convert_to_tensor(params, name="params")
+    import tensorflow as tf
+    with tf.python.framework.ops.name_scope(name):
+        indices = tf.python.framework.ops.convert_to_tensor(indices, name="indices")
+        params = tf.python.framework.ops.convert_to_tensor(params, name="params")
         indices_shape = tf.shape(indices)
         params_shape = tf.shape(params)
 
@@ -51,23 +47,23 @@ def torchlike_gather(params, axis, indices, name=None):
         indices_dtype = indices.dtype.base_dtype
         accum_dim_value = tf.ones((), dtype=indices_dtype)
         # Use correct type for offset index computation
-        casted_params_shape = gen_math_ops.cast(params_shape, indices_dtype)
+        casted_params_shape = tf.python.ops.gen_math_ops.cast(params_shape, indices_dtype)
         for dim in range(axis, 0, -1):
             dim_value = casted_params_shape[dim - 1]
             accum_dim_value *= casted_params_shape[dim]
             start = tf.zeros((), dtype=indices_dtype)
             step = tf.ones((), dtype=indices_dtype)
-            dim_indices = gen_math_ops._range(start, dim_value, step)
+            dim_indices = tf.python.ops.gen_math_ops._range(start, dim_value, step)
             dim_indices *= accum_dim_value
             dim_shape = tf.stack([1] * (dim - 1) + [dim_value] + [1] * (ndims - dim),
                                  axis=0)
             batch_indices += tf.reshape(dim_indices, dim_shape)
 
-        flat_inner_shape_indices = gen_math_ops.prod(indices_shape[:(axis + 1)], [0], False)
+        flat_inner_shape_indices = tf.python.ops.gen_math_ops.prod(indices_shape[:(axis + 1)], [0], False)
         flat_indices = tf.reshape(batch_indices, tf.concat([[flat_inner_shape_indices],
                                                             indices_shape[(axis + 1):]], axis=0))
         outer_shape = params_shape[(axis + 1):]
-        flat_inner_shape_params = gen_math_ops.prod(params_shape[:(axis + 1)], [0], False)
+        flat_inner_shape_params = tf.python.ops.gen_math_ops.prod(params_shape[:(axis + 1)], [0], False)
 
         flat_params = tf.reshape(params, tf.concat([[flat_inner_shape_params], outer_shape], axis=0))
         flat_result = tf.gather(flat_params, flat_indices)

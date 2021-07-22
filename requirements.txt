@@ -1,7 +1,6 @@
 numpy
 nltk
 torch
-tensorflow
 tqdm
 hanlp
 git+https://github.com/Mohan-Zhang-u/py-rouge.git
