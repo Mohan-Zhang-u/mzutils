@@ -10,3 +10,4 @@ from .torch_misc import *
 from .tf_misc import *
 from .list_misc import *
 from .nlp_tasks import *
+from .gym_space_management import *
