@@ -1,7 +1,7 @@
 import numpy as np
 
 
-def normalize_spaces(space, max_space=None, min_space=None, skip_columns=None):
+def normalize_spaces(space, max_space=None, min_space=None, skip_columns=None, fill_value=0.0):
     """
     normalize each column of observation/action space to be in [-1,1] such that it looks like a Box
     space can be the whole original space (X by D) or just one row in the original space (D,)
@@ -11,6 +11,15 @@ def normalize_spaces(space, max_space=None, min_space=None, skip_columns=None):
     :param min_space: numpy array, the minimum value of each column of the space, normally
         we would get this from reading the dataset or prior knowledge
     :param skip_columns: numpy array or list, columns to skip from normalization
+    :param fill_value: float, the value to fill in the normalized space if the original space is masked here.
+    so, if you don't want a part of the space to be normalized, you can pass in a masked array.
+    The value will be automatically filled with fill_value in the normalized space. The returned will be
+    tuple of filled_re_space, max_space, min_space, and the original re_space with mask.
+    e.g.
+    a = np.array(range(24), dtype=np.float64).reshape(4,6)
+    a = np.where(a > 21, np.nan, a)
+    a = np.ma.array(a, mask=np.isnan(a))
+    b, max, min = mzutils.normalize_spaces(a)
     """
     assert not isinstance(space, list)
     if max_space is None:
@@ -26,6 +35,8 @@ def normalize_spaces(space, max_space=None, min_space=None, skip_columns=None):
             re_space[skip_columns] = space[skip_columns]
         else:
             re_space[:, skip_columns] = space[:, skip_columns]
+    if np.ma.is_masked(re_space):
+        return re_space.filled(fill_value=fill_value), max_space, min_space, re_space
     return re_space, max_space, min_space
 
 
