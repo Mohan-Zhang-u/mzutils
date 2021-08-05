@@ -35,12 +35,12 @@ def normalize_spaces(space, max_space=None, min_space=None, skip_columns=None, f
             re_space[skip_columns] = space[skip_columns]
         else:
             re_space[:, skip_columns] = space[:, skip_columns]
-    if np.ma.is_masked(re_space):
+    if np.ma.is_masked(re_space): # if re_space has all masks is False, this sentence can also be false.
         return re_space.filled(fill_value=fill_value), max_space, min_space, re_space
-    return re_space, max_space, min_space
+    return np.array(re_space), max_space, min_space
 
 
-def denormalize_spaces(space_normalized, max_space=None, min_space=None, skip_columns=None):
+def denormalize_spaces(space_normalized, max_space=None, min_space=None, skip_columns=None, fill_value=0.0):
     """
     same as above, and space_normalized can be the whole normalized original space or just one row in the normalized space
     """
@@ -58,7 +58,9 @@ def denormalize_spaces(space_normalized, max_space=None, min_space=None, skip_co
             re_space[skip_columns] = space_normalized[skip_columns]
         else:
             re_space[:, skip_columns] = space_normalized[:, skip_columns]
-    return re_space, max_space, min_space
+    if np.ma.is_masked(re_space): # if re_space has all masks is False, this sentence can also be false.
+        return re_space.filled(fill_value=fill_value), max_space, min_space, re_space
+    return np.array(re_space), max_space, min_space
 
 
 def list_of_str_to_numpy_onehot_dict(lst):
