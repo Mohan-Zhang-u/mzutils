@@ -349,3 +349,23 @@ def save__init__args(values, underscore=False, overwrite=False, subclass_only=Fa
         attr = prefix + arg
         if arg in values and (not hasattr(self, attr) or overwrite):
             setattr(self, attr, values[arg])
+
+class TimeRecorder:
+    def __init__(self):
+        """
+        need to import time.
+        """
+        self.init_time = time.time()
+        self.base_time = self.init_time
+        self.times = []
+    
+    def record(self, name=""):
+        current = time.time()
+        self.times.append((name, current-self.base_time))
+        self.base_time = current
+
+    def get_times(self):
+        return self.times
+    
+    def get_times_str(self):
+        return str(self.get_times())
