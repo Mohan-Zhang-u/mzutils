@@ -19,6 +19,8 @@ torch
 
 tqdm
 
+PyYAML (only if you want to use set_local_vars_from_yaml)
+
 hanlp and git+https://github.com/Mohan-Zhang-u/py-rouge.git (only if you want to use functions in nlp_metrics.py)
 
 tensorflow (only if you want to functions in tf_misc.py)
