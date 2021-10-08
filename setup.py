@@ -1,11 +1,10 @@
 import setuptools
-from mzutils._version import __version__
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
 setuptools.setup(
     name='mzutils',
-    version=__version__,
+    version='0.1401',
     author="Mohan Zhang",
     author_email="mohan.zhang.mz@gmail.com",
     description="Mohan Zhang's toolkit",
