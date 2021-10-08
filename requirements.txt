@@ -2,6 +2,7 @@ numpy
 nltk
 torch
 tqdm
+PyYAML
 # selective installations:
 # hanlp
 # tensorflow

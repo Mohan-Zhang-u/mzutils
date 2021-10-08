@@ -322,8 +322,6 @@ def save__init__args(values, underscore=False, overwrite=False, subclass_only=Fa
     ...             meta_info_attr_size=7,
     ...             obs_shape=(3, 64, 64),
     ...             reward_shape=(1,),
-    ...             # **kwargs,
-    ...             # below are for action selection:
     ...             n_agents=1,
     ...             obs_last_action=False,
     ...             obs_agent_id=True,
@@ -349,6 +347,25 @@ def save__init__args(values, underscore=False, overwrite=False, subclass_only=Fa
         attr = prefix + arg
         if arg in values and (not hasattr(self, attr) or overwrite):
             setattr(self, attr, values[arg])
+
+
+def set_local_vars_from_yaml(yaml_loc, name_space_dict):
+    """
+    set local variables from yaml file.
+    :param yaml_loc: your yaml file location.
+    :param name_space_dict: a dictionary that contains the local variables. e.g. locals()
+    :return: None
+    for example, if your yaml file contains a variable called num_workers and the value of 
+    which is an integer 4, then
+    >>> set_local_vars_from_yaml('path_to_file.yaml', locals())
+    >>> num_workers
+    4
+    """
+    import yaml
+    with open(yaml_loc, 'r') as fp:
+        config_dict = yaml.safe_load(fp)
+    name_space_dict.update(config_dict)
+
 
 class TimeRecorder:
     def __init__(self):
