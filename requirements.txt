@@ -7,3 +7,4 @@ PyYAML
 # hanlp
 # tensorflow
 # git+https://github.com/Mohan-Zhang-u/py-rouge.git
+# git+https://github.com/Mohan-Zhang-u/simple-pid.git
