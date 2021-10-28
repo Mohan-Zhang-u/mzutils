@@ -11,4 +11,4 @@ from .tf_misc import *
 from .list_misc import *
 from .nlp_tasks import *
 from .gym_space_management import *
-from control_models import *
+from .control_models import *
