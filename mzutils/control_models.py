@@ -28,13 +28,17 @@ class PIDModel(object):
             Ki = [Ki for i in range(len_c)]
         if isinstance(Kd, float):
             Kd = [Kd for i in range(len_c)]
-        if lower_bounds is None or isinstance(lower_bounds, float):
-            lower_bounds = [lower_bounds for i in range(len_c)]
-        if upper_bounds is None or isinstance(upper_bounds, float):
-            upper_bounds = [upper_bounds for i in range(len_c)]
         if steady_actions is None:
             # do not adjust bias
-            self.steady_actions = [0.0 for i in range(len_c)]
+            steady_actions = [0.0 for i in range(len_c)]
+        if lower_bounds is None or isinstance(lower_bounds, float):
+            lower_bounds = [lower_bounds for i in range(len_c)]
+        if isinstance(lower_bounds[0], float):
+            lower_bounds = [lower_bounds[i] - steady_actions[i] for i in range(len_c)]
+        if upper_bounds is None or isinstance(upper_bounds, float):
+            upper_bounds = [upper_bounds for i in range(len_c)]
+        if isinstance(upper_bounds[0], float):
+            upper_bounds = [upper_bounds[i] - steady_actions[i] for i in range(len_c)]
         from simple_pid import PID
         self.pids = []
         for i in range(len_c):
