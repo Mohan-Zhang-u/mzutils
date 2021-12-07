@@ -10,9 +10,10 @@ class SimplePriorityQueue():
     >>> q.put((3, "Charles"))
     >>> q.put((1, "Riya"))
     >>> q.put((4, "Stacy"))
+    >>> q.put((0, "John"))
     >>> print(q.nlargest(3))
     [(4, 'Stacy'), (3, 'Charles'), (2, 'Harry')]
-    >>> print(q.nsmallest(5))
+    >>> print(q.nsmallest(8))
     [(1, 'Riya'), (2, 'Harry'), (3, 'Charles'), (4, 'Stacy')]
     >>> print(q.get())
     (1, 'Riya')
