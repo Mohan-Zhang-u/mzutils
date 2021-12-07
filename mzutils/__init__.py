@@ -12,3 +12,4 @@ from .list_misc import *
 from .nlp_tasks import *
 from .gym_space_management import *
 from .control_models import *
+from .data_structures import *
