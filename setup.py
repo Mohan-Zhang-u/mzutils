@@ -26,7 +26,7 @@ def get_extra_requires(path, add_all=True):
     return extra_deps
 
 
-with open("README.md", "r") as fh:
+with open("README.rst", "r") as fh:
     long_description = fh.read()
 
 with open("requirements.txt", "r") as fh:
@@ -34,7 +34,7 @@ with open("requirements.txt", "r") as fh:
 
 setuptools.setup(
     name='mzutils',
-    version='0.1412',
+    version='0.2002',
     author="Mohan Zhang",
     author_email="mohan.zhang.mz@gmail.com",
     description="Mohan Zhang's toolkit",

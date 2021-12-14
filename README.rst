@@ -2,7 +2,9 @@
 
 `mzutils`_ is a personal toolkit that contains various methods to do miscellaneous jobs related to data cleaning, preprocessing, visualizing, evaluating and modeling in various fields of machine learning, especially NLP and RL. It supports Datasets like SQuAD, GLUE, Deepmind CNN/DailyMail in NLP and d4rl in offlineRL, as well as their conversions to JSON, CSV, numpy arrays and tensors.
 
-The purpose of this toolkit is to reuse the code and make Mohan Zhang's life easier.  
+The purpose of this toolkit is to reuse the code and make Mohan Zhang's life easier.
+
+detailed documentation can be found `here <mzutils.rtfd.io>`_.
 
 Install
 -------
