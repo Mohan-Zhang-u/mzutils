@@ -7,18 +7,29 @@ The only purpose of this toolkit is to reuse the code and make Mohan Zhang's lif
 
 The toolkit, without specification, is under the MIT license.  
 
-install by [pip install mzutils](https://pypi.org/project/mzutils/)
-
 ### Requirements
 
-numpy
+due to this [unreasonable feature](https://github.com/pypa/pip/issues/6301), you will need to
 
-torch
+install from requirements.txt, extras_requirements.txt or security_requirements.txt by
 
-nltk 
+```bash
+pip install -U mzutils
+```
 
-PyYAML (only if you want to use set_local_vars_from_yaml)
+or
 
-hanlp and git+https://github.com/Mohan-Zhang-u/py-rouge.git (only if you want to use functions in nlp_metrics.py)
+```bash
+pip install -U mzutils[nlp]
+```
+or
 
-tensorflow (only if you want to functions in tf_misc.py)
+```bash
+pip install -U mzutils[all]
+```
+
+or 
+
+```bash
+pip install -r security_requirements.txt
+```

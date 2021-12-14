@@ -1,0 +1,4 @@
+# selective installations:
+PyYAML;                                                         yaml        # only if you want to use set_local_vars_from_yaml
+tensorflow;                                                     tf          # only if you want to functions in tf_misc.py
+hanlp;                                                          nlp         # only if you want to use set_local_vars_from_functions in nlp_metrics.py

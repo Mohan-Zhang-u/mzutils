@@ -1,0 +1,2 @@
+git+https://github.com/Mohan-Zhang-u/py-rouge.git  # only if you want to use functions in nlp_metrics.py
+git+https://github.com/Mohan-Zhang-u/simple-pid.git  # only if you want to use PIDModel
