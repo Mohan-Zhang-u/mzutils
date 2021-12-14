@@ -36,7 +36,7 @@ with open("requirements.txt", "r") as fh:
 
 setuptools.setup(
     name='mzutils',
-    version='0.1410',
+    version='0.1412',
     author="Mohan Zhang",
     author_email="mohan.zhang.mz@gmail.com",
     description="Mohan Zhang's toolkit",
