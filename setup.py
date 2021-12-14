@@ -3,8 +3,6 @@ import setuptools
 # even though the unreasonable "security reason" https://github.com/pypa/pip/issues/6301 bans direct install from setup.py, we should manage to install it with pip install -r
 
 def get_extra_requires(path, add_all=True):
-    import re
-    from collections import defaultdict
 
     with open(path) as fp:
         extra_deps = {}
