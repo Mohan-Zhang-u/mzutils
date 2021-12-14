@@ -1,5 +1,6 @@
-import pickle
 import codecs
+import pickle
+
 
 def serialize(obj, location):
     with open(location, 'wb') as fp:
@@ -9,6 +10,7 @@ def serialize(obj, location):
 def deserialize(location):
     with open(location, 'rb') as fp:
         return pickle.load(fp)
+
 
 def serialize_file_to_list(file_location, location, strip=False):
     """

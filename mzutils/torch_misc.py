@@ -1,5 +1,6 @@
-import torch
 import sys
+
+import torch
 
 
 def model_params(model: torch.nn.Module) -> int:
@@ -17,7 +18,9 @@ def conv2d_select_correct_element(c_in: int or tuple, loc):
     else:
         return c_in[loc]
 
-def conv2d_output_single_shape(h_in: int, kernel_size: int, stride: int = 1, padding: int or tuple = 0, dilation: int = 1):
+
+def conv2d_output_single_shape(h_in: int, kernel_size: int, stride: int = 1, padding: int or tuple = 0,
+                               dilation: int = 1):
     """
     compute the output shape of a single height or width after convolve, as the formula here states:
     https://pytorch.org/docs/master/generated/torch.nn.Conv2d.html
@@ -62,7 +65,7 @@ def check_tensor_occupied_memory(t):
 
 
 class LabelSmoothingLoss(torch.nn.Module):
-    #https://github.com/pytorch/pytorch/issues/7455#issuecomment-513062631
+    # https://github.com/pytorch/pytorch/issues/7455#issuecomment-513062631
     def __init__(self, classes, smoothing=0.0, dim=-1):
         super(LabelSmoothingLoss, self).__init__()
         self.confidence = 1.0 - smoothing

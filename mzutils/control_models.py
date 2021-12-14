@@ -1,5 +1,6 @@
+from typing import Union, List
+
 import numpy as np
-from typing import Union, List, Any
 
 
 class PIDModel(object):

@@ -6,7 +6,6 @@ import tarfile
 import time
 import zipfile
 from inspect import getfullargspec
-from .list_misc import *
 
 # dependencies
 import nltk
@@ -74,14 +73,14 @@ def get_checkpoints_in_loc(in_path, keywords=['checkpoint-'], files_or_folders='
     re_list = []
     if not os.path.isdir(in_path):
         in_path = parent_dir_and_name(in_path)[0]
-    
+
     for name in os.listdir(in_path):
         name_path = os.path.abspath(os.path.join(in_path, name))
         pattern_truth = all([keyword in name_path for keyword in keywords])
         if pattern_truth:
-            if os.path.isfile(name_path) and files_or_folders=='files':
+            if os.path.isfile(name_path) and files_or_folders == 'files':
                 re_list.append(name_path)
-            elif os.path.isdir(name_path) and files_or_folders=='folders':
+            elif os.path.isdir(name_path) and files_or_folders == 'folders':
                 re_list.append(name_path)
     return re_list
 
@@ -189,7 +188,8 @@ def helper_document_segmentor(documents_dir, store_dir, name, max_length, langua
                 word_count = 0
                 document = ""
                 i = i + 1
-                print("Warning: "+ "there is a sentence with word length " + str(current_count) + " , but the maximum document length is " + str(max_length))
+                print("Warning: " + "there is a sentence with word length " + str(
+                    current_count) + " , but the maximum document length is " + str(max_length))
                 continue
                 # raise Exception("there is a sentence with word length " + str(current_count) + " , but the maximum document length is " + str(max_length))
             if word_count + current_count >= max_length:
@@ -375,14 +375,14 @@ class TimeRecorder:
         self.init_time = time.time()
         self.base_time = self.init_time
         self.times = []
-    
+
     def record(self, name=""):
         current = time.time()
-        self.times.append((name, current-self.base_time))
+        self.times.append((name, current - self.base_time))
         self.base_time = current
 
     def get_times(self):
         return self.times
-    
+
     def get_times_str(self):
         return str(self.get_times())

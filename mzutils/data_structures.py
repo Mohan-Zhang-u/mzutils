@@ -26,34 +26,36 @@ class SimplePriorityQueue():
     >>> print(q.get())
     None
     """
+
     def __init__(self, maxsize=0):
         self.heap = []
         self.maxsize = maxsize
         heapq.heapify(self.heap)
-        
+
     def __len__(self):
         return len(self.heap)
-    
+
     def __str__(self):
         return self.heap.__str__()
-        
+
     def put(self, element):
         # like indicated here, https://stackoverflow.com/questions/42236820/adding-numpy-array-to-a-heap-queue, inserting numpy array to heapq can be risky.
         try:
             numpy_checker = element in self.heap
         except:
-            raise ValueError("Exact same value put again into the priority queue! You may trigger numpy comparision error, please check and fix.")
+            raise ValueError(
+                "Exact same value put again into the priority queue! You may trigger numpy comparision error, please check and fix.")
         if self.maxsize > 0 and len(self.heap) >= self.maxsize:
             heapq.heappushpop(self.heap, element)
         else:
             heapq.heappush(self.heap, element)
-    
+
     def get(self):
         try:
             return heapq.heappop(self.heap)
         except IndexError:
             return None
-    
+
     def nlargest(self, n, key=None):
         return heapq.nlargest(n, self.heap)
 

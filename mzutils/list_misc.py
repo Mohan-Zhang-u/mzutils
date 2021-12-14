@@ -24,7 +24,7 @@ def pad_list(lst: list, length: int, element=''):
     """
     if len(lst) >= length:
         return lst[:length]
-    
+
     return lst + [element for _ in range(length - len(lst))]
 
 

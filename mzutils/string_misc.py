@@ -2,6 +2,7 @@ import ast
 import codecs
 import pickle
 import re
+
 import nltk
 
 
@@ -16,7 +17,7 @@ def replace_nth_occur(InputText, old, new, n=0, option='only nth'):
     3) 'all right' replaces nth occurrence and all occurrences to the right.
     if n out of bound, do nothing.
     """
-    n=n+1
+    n = n + 1
     if option == 'only nth':
         left_join = old
         right_join = old
@@ -30,9 +31,9 @@ def replace_nth_occur(InputText, old, new, n=0, option='only nth'):
         print("Invalid option. Please choose from: 'only nth' (default), 'all left' or 'all right'")
         return None
     groups = InputText.split(old)
-    if groups[:n]!=[] and groups[n:]!=[]:
-      nth_split = [left_join.join(groups[:n]), right_join.join(groups[n:])]
-      return new.join(nth_split)
+    if groups[:n] != [] and groups[n:] != []:
+        nth_split = [left_join.join(groups[:n]), right_join.join(groups[n:])]
+        return new.join(nth_split)
     return InputText
 
 
@@ -111,7 +112,8 @@ def string_segementor_on_word_length(content, max_length, language='english'):
             word_count = 0
             document = ""
             i = i + 1
-            print("Warning: "+ "there is a sentence with word length " + str(current_count) + " , but the maximum document length is " + str(max_length))
+            print("Warning: " + "there is a sentence with word length " + str(
+                current_count) + " , but the maximum document length is " + str(max_length))
             continue
             # raise Exception("there is a sentence with word length " + str(current_count) + " , but the maximum document length is " + str(max_length))
         if word_count + current_count >= max_length:
@@ -227,20 +229,21 @@ def char_in_language(in_char, expected=None):
     >>> print(char_in_language('时', 'num'))
     False
     """
-    assert(len(in_char)==1)
+    assert (len(in_char) == 1)
     in_range = ''
     in_char = ord(in_char)
-    if in_char >= ord('\u0000') and in_char<=ord('\u007f'):
+    if in_char >= ord('\u0000') and in_char <= ord('\u007f'):
         in_range = 'ascii'
         if expected == in_range:
             return True
-    if in_char >= ord('\u0030') and in_char<= ord('\u0039'):
+    if in_char >= ord('\u0030') and in_char <= ord('\u0039'):
         in_range = 'num'
         if expected == in_range:
             return True
         if expected is not None and expected != in_range:
             return False
-    if (in_char >= ord('\u0041') and in_char <= ord('\u005a')) or (in_char >= ord('\u0061') and in_char <= ord('\u007a')):
+    if (in_char >= ord('\u0041') and in_char <= ord('\u005a')) or (
+            in_char >= ord('\u0061') and in_char <= ord('\u007a')):
         in_range = 'alphabet'
         if expected == in_range:
             return True
@@ -292,14 +295,14 @@ def string_in_language(in_string, expected=None):
     :param expected: language
     :return: true or false (full ascii string is going to be false when expected is not ascii)
     """
-    
+
     ascii_matches = re.findall(r'[\u0000-\u007f]+', in_string)
     if len(ascii_matches) > 0 and in_string == ascii_matches[0]:
         if expected == 'ascii':
             return True
         else:
             return False
-    
+
     if expected == 'zh':
         matches = re.findall(r'[\u0000-\u007f\u4e00-\u9fff]+', in_string)
         if len(matches) > 0 and in_string == matches[0]:
@@ -333,5 +336,5 @@ def nltk_english_pos_tags():
     wh = ('WDT', 'WP', 'WP$', 'WRB')
     meaningless_along = ('CC', 'DT', 'EX', 'IN', 'LS', 'MD', 'TO', 'UH') + pronoun + wh
 
-    return {'entities': entities, 'meaningless_along': meaningless_along, 'digits': digits, 'foreign': foreign, 'adjective': adjective, 'noun': noun, 'adverb': adverb, 'verb': verb, 'pronoun': pronoun, 'wh': wh}
-
+    return {'entities': entities, 'meaningless_along': meaningless_along, 'digits': digits, 'foreign': foreign,
+            'adjective': adjective, 'noun': noun, 'adverb': adverb, 'verb': verb, 'pronoun': pronoun, 'wh': wh}

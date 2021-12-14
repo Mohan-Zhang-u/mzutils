@@ -27,7 +27,7 @@ def normalize_spaces(space, max_space=None, min_space=None, skip_columns=None, f
     if min_space is None:
         min_space = space.min(axis=0)
     gap = max_space - min_space
-    gap += 1e-8 # to avoid div by 0
+    gap += 1e-8  # to avoid div by 0
     full_sum = max_space + min_space
     re_space = (2 * space - full_sum) / gap
     if skip_columns is not None:
@@ -35,7 +35,7 @@ def normalize_spaces(space, max_space=None, min_space=None, skip_columns=None, f
             re_space[skip_columns] = space[skip_columns]
         else:
             re_space[:, skip_columns] = space[:, skip_columns]
-    if np.ma.is_masked(re_space): # if re_space has all masks is False, this sentence can also be false.
+    if np.ma.is_masked(re_space):  # if re_space has all masks is False, this sentence can also be false.
         return re_space.filled(fill_value=fill_value), max_space, min_space, re_space
     return np.array(re_space), max_space, min_space
 
@@ -50,7 +50,7 @@ def denormalize_spaces(space_normalized, max_space=None, min_space=None, skip_co
     if min_space is None:
         min_space = space_normalized.min(axis=0)
     gap = max_space - min_space
-    gap += 1e-8 # to avoid div by 0
+    gap += 1e-8  # to avoid div by 0
     full_sum = max_space + min_space
     re_space = (space_normalized * gap + full_sum) / 2
     if skip_columns is not None:
@@ -58,7 +58,7 @@ def denormalize_spaces(space_normalized, max_space=None, min_space=None, skip_co
             re_space[skip_columns] = space_normalized[skip_columns]
         else:
             re_space[:, skip_columns] = space_normalized[:, skip_columns]
-    if np.ma.is_masked(re_space): # if re_space has all masks is False, this sentence can also be false.
+    if np.ma.is_masked(re_space):  # if re_space has all masks is False, this sentence can also be false.
         return re_space.filled(fill_value=fill_value), max_space, min_space, re_space
     return np.array(re_space), max_space, min_space
 

@@ -69,7 +69,7 @@ def torchlike_gather(params, axis, indices, name=None):
         flat_result = tf.gather(flat_params, flat_indices)
         result = tf.reshape(flat_result, tf.concat([indices_shape, outer_shape], axis=0))
         final_shape = indices.get_shape()[:axis].merge_with(
-                params.get_shape()[:axis])
+            params.get_shape()[:axis])
         final_shape = final_shape.concatenate(indices.get_shape()[axis:])
         final_shape = final_shape.concatenate(params.get_shape()[(axis + 1):])
         result.set_shape(final_shape)

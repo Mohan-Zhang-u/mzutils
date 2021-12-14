@@ -1,8 +1,7 @@
 import copy
-import numpy as np
-from nltk.translate.bleu_score import corpus_bleu
-from nltk.tokenize import word_tokenize
 
+from nltk.tokenize import word_tokenize
+from nltk.translate.bleu_score import corpus_bleu
 
 
 def rouge_helper_prepare_results(m, p, r, f):
@@ -27,7 +26,8 @@ def remove_sub_strings_chinese(predicted_txt, tokens=['ᐛ', '✬', '<unk>']):
     return predicted_txt
 
 
-def translation_paraphrase_evaluation_english_tagpa(sources, hypos, refs, print_scores=True, max_n=4, rouge_alpha=0.5, rouge_weight_factor=1.2, rouge_stemming=True):
+def translation_paraphrase_evaluation_english_tagpa(sources, hypos, refs, print_scores=True, max_n=4, rouge_alpha=0.5,
+                                                    rouge_weight_factor=1.2, rouge_stemming=True):
     """
     to evalute generated paraphrase or translations with BlEU and ROUGE scores.
     Nothing should be tokenized here.
@@ -37,7 +37,8 @@ def translation_paraphrase_evaluation_english_tagpa(sources, hypos, refs, print_
     :return: a dictionary of scores.
     """
     import rouge  # pip install git+https://github.com/Mohan-Zhang-u/py-rouge.git
-    sources_refs = [[sentence] for sentence in sources]  # we use source as the reference to compute a negative score, in order to measure the diversity of paraphrasing.
+    sources_refs = [[sentence] for sentence in
+                    sources]  # we use source as the reference to compute a negative score, in order to measure the diversity of paraphrasing.
 
     metrics_dict = {}
 
@@ -46,30 +47,32 @@ def translation_paraphrase_evaluation_english_tagpa(sources, hypos, refs, print_
         apply_best = aggregator == 'Best'
 
         evaluator = rouge.Rouge(metrics=['rouge-n', 'rouge-l', 'rouge-w'],
-                            max_n=max_n,
-                            apply_avg=apply_avg,
-                            apply_best=apply_best,
-                            alpha=rouge_alpha, # Default F1_score
-                            weight_factor=rouge_weight_factor,
-                            stemming=rouge_stemming)
-        
-        compare_dict = {'hypos':hypos, 'sources':sources, 'sources_refs_diversity_negative': hypos}
+                                max_n=max_n,
+                                apply_avg=apply_avg,
+                                apply_best=apply_best,
+                                alpha=rouge_alpha,  # Default F1_score
+                                weight_factor=rouge_weight_factor,
+                                stemming=rouge_stemming)
+
+        compare_dict = {'hypos': hypos, 'sources': sources, 'sources_refs_diversity_negative': hypos}
         for key in compare_dict:
             if key == 'sources_refs_diversity_negative':
                 scores = evaluator.get_scores(compare_dict[key], sources_refs)
             else:
                 scores = evaluator.get_scores(compare_dict[key], refs)
-            metrics_dict[key+'_rouge_'+aggregator] = scores
+            metrics_dict[key + '_rouge_' + aggregator] = scores
 
             if print_scores:
                 print('Evaluation with {} with {}'.format(key, aggregator))
                 for metric, results in sorted(scores.items(), key=lambda x: x[0]):
-                    if not apply_avg and not apply_best: # value is a type of list as we evaluate each summary vs each reference
+                    if not apply_avg and not apply_best:  # value is a type of list as we evaluate each summary vs each reference
                         for hypothesis_id, results_per_ref in enumerate(results):
                             nb_references = len(results_per_ref['p'])
                             for reference_id in range(nb_references):
                                 print('\tHypothesis #{} & Reference #{}: '.format(hypothesis_id, reference_id))
-                                print('\t' + rouge_helper_prepare_results(metric,results_per_ref['p'][reference_id], results_per_ref['r'][reference_id], results_per_ref['f'][reference_id]))
+                                print('\t' + rouge_helper_prepare_results(metric, results_per_ref['p'][reference_id],
+                                                                          results_per_ref['r'][reference_id],
+                                                                          results_per_ref['f'][reference_id]))
                         print()
                     else:
                         print(rouge_helper_prepare_results(metric, results['p'], results['r'], results['f']))
@@ -89,7 +92,6 @@ def translation_paraphrase_evaluation_english_tagpa(sources, hypos, refs, print_
         for i in range(len(sources_ref)):
             sources_ref[i] = word_tokenize(sources_ref[i])
 
-
     # metrics_dict["bleu_no_weights"] = corpus_bleu(refs, hypos)
     metrics_dict["bleu_1"] = corpus_bleu(bleu_refs, bleu_hypos, weights=(1, 0, 0, 0))
     metrics_dict["bleu_2"] = corpus_bleu(bleu_refs, bleu_hypos, weights=(0.5, 0.5, 0, 0))
@@ -101,19 +103,28 @@ def translation_paraphrase_evaluation_english_tagpa(sources, hypos, refs, print_
     metrics_dict["source_sentence_bleu_3"] = corpus_bleu(bleu_refs, bleu_sources, weights=(0.33, 0.33, 0.34, 0))
     metrics_dict["source_sentence_bleu_4"] = corpus_bleu(bleu_refs, bleu_sources, weights=(0.25, 0.25, 0.25, 0.25))
 
-    metrics_dict["sources_as_refs_diversity_negative_bleu_1"] = corpus_bleu(sources_refs, bleu_hypos, weights=(1, 0, 0, 0))
-    metrics_dict["sources_as_refs_diversity_negative_bleu_2"] = corpus_bleu(sources_refs, bleu_hypos, weights=(0.5, 0.5, 0, 0))
-    metrics_dict["sources_as_refs_diversity_negative_bleu_3"] = corpus_bleu(sources_refs, bleu_hypos, weights=(0.33, 0.33, 0.34, 0))
-    metrics_dict["sources_as_refs_diversity_negative_bleu_4"] = corpus_bleu(sources_refs, bleu_hypos, weights=(0.25, 0.25, 0.25, 0.25))
+    metrics_dict["sources_as_refs_diversity_negative_bleu_1"] = corpus_bleu(sources_refs, bleu_hypos,
+                                                                            weights=(1, 0, 0, 0))
+    metrics_dict["sources_as_refs_diversity_negative_bleu_2"] = corpus_bleu(sources_refs, bleu_hypos,
+                                                                            weights=(0.5, 0.5, 0, 0))
+    metrics_dict["sources_as_refs_diversity_negative_bleu_3"] = corpus_bleu(sources_refs, bleu_hypos,
+                                                                            weights=(0.33, 0.33, 0.34, 0))
+    metrics_dict["sources_as_refs_diversity_negative_bleu_4"] = corpus_bleu(sources_refs, bleu_hypos,
+                                                                            weights=(0.25, 0.25, 0.25, 0.25))
 
     if print_scores:
-        for sc in ["bleu_1", "bleu_2", "bleu_3", "bleu_4", "source_sentence_bleu_1", "source_sentence_bleu_2", "source_sentence_bleu_3", "source_sentence_bleu_4", "sources_as_refs_diversity_negative_bleu_1", "sources_as_refs_diversity_negative_bleu_2", "sources_as_refs_diversity_negative_bleu_3", "sources_as_refs_diversity_negative_bleu_4"]:
-            print(sc,"(percents):", round(metrics_dict[sc], 4) * 100)
+        for sc in ["bleu_1", "bleu_2", "bleu_3", "bleu_4", "source_sentence_bleu_1", "source_sentence_bleu_2",
+                   "source_sentence_bleu_3", "source_sentence_bleu_4", "sources_as_refs_diversity_negative_bleu_1",
+                   "sources_as_refs_diversity_negative_bleu_2", "sources_as_refs_diversity_negative_bleu_3",
+                   "sources_as_refs_diversity_negative_bleu_4"]:
+            print(sc, "(percents):", round(metrics_dict[sc], 4) * 100)
 
     return metrics_dict
 
 
-def translation_paraphrase_evaluation(sources, hypos, refs, sentence_preproce_function=None, print_scores=True, max_n=4, rouge_alpha=0.5, rouge_weight_factor=1.2, rouge_stemming=True, hypo_style='first'):
+def translation_paraphrase_evaluation(sources, hypos, refs, sentence_preproce_function=None, print_scores=True, max_n=4,
+                                      rouge_alpha=0.5, rouge_weight_factor=1.2, rouge_stemming=True,
+                                      hypo_style='first'):
     """
     to evalute generated paraphrase or translations with BlEU and ROUGE scores.
     Nothing should be tokenized here.
@@ -125,15 +136,15 @@ def translation_paraphrase_evaluation(sources, hypos, refs, sentence_preproce_fu
     :return: a dictionary of scores.
     """
     import rouge  # pip install git+https://github.com/Mohan-Zhang-u/py-rouge.git
-    assert(isinstance(sources, list))
-    assert(isinstance(sources[0], str))
-    assert(isinstance(hypos, list))
-    assert(isinstance(hypos[0], list))
-    assert(isinstance(hypos[0][0], str))
-    assert(isinstance(refs, list))
-    assert(isinstance(refs[0], list))
-    assert(isinstance(refs[0][0], str))
-    
+    assert (isinstance(sources, list))
+    assert (isinstance(sources[0], str))
+    assert (isinstance(hypos, list))
+    assert (isinstance(hypos[0], list))
+    assert (isinstance(hypos[0][0], str))
+    assert (isinstance(refs, list))
+    assert (isinstance(refs[0], list))
+    assert (isinstance(refs[0][0], str))
+
     if hypo_style == 'first':
         hypos = [hypo[0] for hypo in hypos]
     else:
@@ -149,8 +160,8 @@ def translation_paraphrase_evaluation(sources, hypos, refs, sentence_preproce_fu
             hypos = [[sentence_preproce_function(hypo) for hypo in hypo_list] for hypo_list in hypos]
         refs = [[sentence_preproce_function(ref) for ref in refs_list] for refs_list in refs]
 
-
-    sources_refs = [[sentence] for sentence in sources]  # we use source as the reference to compute a negative score, in order to measure the diversity of paraphrasing.
+    sources_refs = [[sentence] for sentence in
+                    sources]  # we use source as the reference to compute a negative score, in order to measure the diversity of paraphrasing.
     metrics_dict = {}
 
     for aggregator in ['Avg', 'Best']:
@@ -158,30 +169,32 @@ def translation_paraphrase_evaluation(sources, hypos, refs, sentence_preproce_fu
         apply_best = aggregator == 'Best'
 
         evaluator = rouge.Rouge(metrics=['rouge-n', 'rouge-l', 'rouge-w'],
-                            max_n=max_n,
-                            apply_avg=apply_avg,
-                            apply_best=apply_best,
-                            alpha=rouge_alpha, # Default F1_score
-                            weight_factor=rouge_weight_factor,
-                            stemming=rouge_stemming)
-        
-        compare_dict = {'hypos':hypos, 'sources':sources, 'sources_refs_diversity_negative': hypos}
+                                max_n=max_n,
+                                apply_avg=apply_avg,
+                                apply_best=apply_best,
+                                alpha=rouge_alpha,  # Default F1_score
+                                weight_factor=rouge_weight_factor,
+                                stemming=rouge_stemming)
+
+        compare_dict = {'hypos': hypos, 'sources': sources, 'sources_refs_diversity_negative': hypos}
         for key in compare_dict:
             if key == 'sources_refs_diversity_negative':
                 scores = evaluator.get_scores(compare_dict[key], sources_refs)
             else:
                 scores = evaluator.get_scores(compare_dict[key], refs)
-            metrics_dict[key+'_rouge_'+aggregator] = scores
+            metrics_dict[key + '_rouge_' + aggregator] = scores
 
             if print_scores:
                 print('Evaluation with {} with {}'.format(key, aggregator))
                 for metric, results in sorted(scores.items(), key=lambda x: x[0]):
-                    if not apply_avg and not apply_best: # value is a type of list as we evaluate each summary vs each reference
+                    if not apply_avg and not apply_best:  # value is a type of list as we evaluate each summary vs each reference
                         for hypothesis_id, results_per_ref in enumerate(results):
                             nb_references = len(results_per_ref['p'])
                             for reference_id in range(nb_references):
                                 print('\tHypothesis #{} & Reference #{}: '.format(hypothesis_id, reference_id))
-                                print('\t' + rouge_helper_prepare_results(metric,results_per_ref['p'][reference_id], results_per_ref['r'][reference_id], results_per_ref['f'][reference_id]))
+                                print('\t' + rouge_helper_prepare_results(metric, results_per_ref['p'][reference_id],
+                                                                          results_per_ref['r'][reference_id],
+                                                                          results_per_ref['f'][reference_id]))
                         print()
                     else:
                         print(rouge_helper_prepare_results(metric, results['p'], results['r'], results['f']))
@@ -208,8 +221,6 @@ def translation_paraphrase_evaluation(sources, hypos, refs, sentence_preproce_fu
         for i in range(len(sources_ref)):
             sources_ref[i] = word_tokenize(sources_ref[i])
 
-
-
     # print(corpus_bleu(bleu_refs, bleu_hypos, weights=(1, 0, 0, 0)))
     # return
     metrics_dict["bleu_1"] = corpus_bleu(bleu_refs, bleu_hypos, weights=(1, 0, 0, 0))
@@ -222,19 +233,28 @@ def translation_paraphrase_evaluation(sources, hypos, refs, sentence_preproce_fu
     metrics_dict["source_sentence_bleu_3"] = corpus_bleu(bleu_refs, bleu_sources, weights=(0.33, 0.33, 0.34, 0))
     metrics_dict["source_sentence_bleu_4"] = corpus_bleu(bleu_refs, bleu_sources, weights=(0.25, 0.25, 0.25, 0.25))
 
-    metrics_dict["sources_as_refs_diversity_negative_bleu_1"] = corpus_bleu(sources_refs, bleu_hypos, weights=(1, 0, 0, 0))
-    metrics_dict["sources_as_refs_diversity_negative_bleu_2"] = corpus_bleu(sources_refs, bleu_hypos, weights=(0.5, 0.5, 0, 0))
-    metrics_dict["sources_as_refs_diversity_negative_bleu_3"] = corpus_bleu(sources_refs, bleu_hypos, weights=(0.33, 0.33, 0.34, 0))
-    metrics_dict["sources_as_refs_diversity_negative_bleu_4"] = corpus_bleu(sources_refs, bleu_hypos, weights=(0.25, 0.25, 0.25, 0.25))
+    metrics_dict["sources_as_refs_diversity_negative_bleu_1"] = corpus_bleu(sources_refs, bleu_hypos,
+                                                                            weights=(1, 0, 0, 0))
+    metrics_dict["sources_as_refs_diversity_negative_bleu_2"] = corpus_bleu(sources_refs, bleu_hypos,
+                                                                            weights=(0.5, 0.5, 0, 0))
+    metrics_dict["sources_as_refs_diversity_negative_bleu_3"] = corpus_bleu(sources_refs, bleu_hypos,
+                                                                            weights=(0.33, 0.33, 0.34, 0))
+    metrics_dict["sources_as_refs_diversity_negative_bleu_4"] = corpus_bleu(sources_refs, bleu_hypos,
+                                                                            weights=(0.25, 0.25, 0.25, 0.25))
 
     if print_scores:
-        for sc in ["bleu_1", "bleu_2", "bleu_3", "bleu_4", "source_sentence_bleu_1", "source_sentence_bleu_2", "source_sentence_bleu_3", "source_sentence_bleu_4", "sources_as_refs_diversity_negative_bleu_1", "sources_as_refs_diversity_negative_bleu_2", "sources_as_refs_diversity_negative_bleu_3", "sources_as_refs_diversity_negative_bleu_4"]:
-            print(sc,"(percents):", round(metrics_dict[sc], 4) * 100)
+        for sc in ["bleu_1", "bleu_2", "bleu_3", "bleu_4", "source_sentence_bleu_1", "source_sentence_bleu_2",
+                   "source_sentence_bleu_3", "source_sentence_bleu_4", "sources_as_refs_diversity_negative_bleu_1",
+                   "sources_as_refs_diversity_negative_bleu_2", "sources_as_refs_diversity_negative_bleu_3",
+                   "sources_as_refs_diversity_negative_bleu_4"]:
+            print(sc, "(percents):", round(metrics_dict[sc], 4) * 100)
 
     return metrics_dict
 
 
-def translation_paraphrase_evaluation_chinese(sources, hypos, refs, sentence_preproce_function=None, print_scores=True, max_n=4, rouge_alpha=0.5, rouge_weight_factor=1.2, rouge_stemming=True, hypo_style='first', word_segmentor='character'):
+def translation_paraphrase_evaluation_chinese(sources, hypos, refs, sentence_preproce_function=None, print_scores=True,
+                                              max_n=4, rouge_alpha=0.5, rouge_weight_factor=1.2, rouge_stemming=True,
+                                              hypo_style='first', word_segmentor='character'):
     """
     to evalute generated paraphrase or translations with BlEU and ROUGE scores.
     Nothing should be tokenized here.
@@ -247,14 +267,14 @@ def translation_paraphrase_evaluation_chinese(sources, hypos, refs, sentence_pre
     :return: a dictionary of scores.
     """
     import rouge  # pip install git+https://github.com/Mohan-Zhang-u/py-rouge.git
-    assert(isinstance(sources, list))
-    assert(isinstance(sources[0], str))
-    assert(isinstance(hypos, list))
-    assert(isinstance(hypos[0], list))
-    assert(isinstance(hypos[0][0], str))
-    assert(isinstance(refs, list))
-    assert(isinstance(refs[0], list))
-    assert(isinstance(refs[0][0], str))
+    assert (isinstance(sources, list))
+    assert (isinstance(sources[0], str))
+    assert (isinstance(hypos, list))
+    assert (isinstance(hypos[0], list))
+    assert (isinstance(hypos[0][0], str))
+    assert (isinstance(refs, list))
+    assert (isinstance(refs[0], list))
+    assert (isinstance(refs[0][0], str))
 
     # apply sentence_preproce_function, e.g. remove_tokens
     if sentence_preproce_function is not None:
@@ -262,8 +282,8 @@ def translation_paraphrase_evaluation_chinese(sources, hypos, refs, sentence_pre
         hypos = [[sentence_preproce_function(hypo) for hypo in hypo_list] for hypo_list in hypos]
         refs = [[sentence_preproce_function(ref) for ref in refs_list] for refs_list in refs]
 
-
-    sources_refs = [[sentence] for sentence in sources]  # we use source as the reference to compute a negative score, in order to measure the diversity of paraphrasing.
+    sources_refs = [[sentence] for sentence in
+                    sources]  # we use source as the reference to compute a negative score, in order to measure the diversity of paraphrasing.
     metrics_dict = {}
 
     # tokenize chinese sentences.
@@ -311,7 +331,7 @@ def translation_paraphrase_evaluation_chinese(sources, hypos, refs, sentence_pre
         for bleu_sources_ref in bleu_sources_refs:
             for i in range(len(bleu_sources_ref)):
                 bleu_sources_ref[i] = word_tokenize(bleu_sources_ref[i])
-    
+
         sources = [' '.join(source) for source in bleu_sources]
         refs = [[' '.join(ref) for ref in ref_list] for ref_list in bleu_refs]
         sources_refs = [[' '.join(ref) for ref in ref_list] for ref_list in bleu_sources_refs]
@@ -328,36 +348,37 @@ def translation_paraphrase_evaluation_chinese(sources, hypos, refs, sentence_pre
         apply_best = aggregator == 'Best'
 
         evaluator = rouge.Rouge(metrics=['rouge-n', 'rouge-l', 'rouge-w'],
-                            max_n=max_n,
-                            apply_avg=apply_avg,
-                            apply_best=apply_best,
-                            alpha=rouge_alpha, # Default F1_score
-                            weight_factor=rouge_weight_factor,
-                            stemming=rouge_stemming,
-                            language='chinese')
-        
-        compare_dict = {'hypos':hypos, 'sources':sources, 'sources_refs_diversity_negative': hypos}
+                                max_n=max_n,
+                                apply_avg=apply_avg,
+                                apply_best=apply_best,
+                                alpha=rouge_alpha,  # Default F1_score
+                                weight_factor=rouge_weight_factor,
+                                stemming=rouge_stemming,
+                                language='chinese')
+
+        compare_dict = {'hypos': hypos, 'sources': sources, 'sources_refs_diversity_negative': hypos}
         for key in compare_dict:
             if key == 'sources_refs_diversity_negative':
                 scores = evaluator.get_scores(compare_dict[key], sources_refs)
             else:
                 scores = evaluator.get_scores(compare_dict[key], refs)
-            metrics_dict[key+'_rouge_'+aggregator] = scores
+            metrics_dict[key + '_rouge_' + aggregator] = scores
 
             if print_scores:
                 print('Evaluation with {} with {}'.format(key, aggregator))
                 for metric, results in sorted(scores.items(), key=lambda x: x[0]):
-                    if not apply_avg and not apply_best: # value is a type of list as we evaluate each summary vs each reference
+                    if not apply_avg and not apply_best:  # value is a type of list as we evaluate each summary vs each reference
                         for hypothesis_id, results_per_ref in enumerate(results):
                             nb_references = len(results_per_ref['p'])
                             for reference_id in range(nb_references):
                                 print('\tHypothesis #{} & Reference #{}: '.format(hypothesis_id, reference_id))
-                                print('\t' + rouge_helper_prepare_results(metric,results_per_ref['p'][reference_id], results_per_ref['r'][reference_id], results_per_ref['f'][reference_id]))
+                                print('\t' + rouge_helper_prepare_results(metric, results_per_ref['p'][reference_id],
+                                                                          results_per_ref['r'][reference_id],
+                                                                          results_per_ref['f'][reference_id]))
                         print()
                     else:
                         print(rouge_helper_prepare_results(metric, results['p'], results['r'], results['f']))
                 print()
-
 
     metrics_dict["bleu_1"] = corpus_bleu(bleu_refs, bleu_hypos, weights=(1, 0, 0, 0))
     metrics_dict["bleu_2"] = corpus_bleu(bleu_refs, bleu_hypos, weights=(0.5, 0.5, 0, 0))
@@ -369,13 +390,20 @@ def translation_paraphrase_evaluation_chinese(sources, hypos, refs, sentence_pre
     metrics_dict["source_sentence_bleu_3"] = corpus_bleu(bleu_refs, bleu_sources, weights=(0.33, 0.33, 0.34, 0))
     metrics_dict["source_sentence_bleu_4"] = corpus_bleu(bleu_refs, bleu_sources, weights=(0.25, 0.25, 0.25, 0.25))
 
-    metrics_dict["sources_as_refs_diversity_negative_bleu_1"] = corpus_bleu(bleu_sources_refs, bleu_hypos, weights=(1, 0, 0, 0))
-    metrics_dict["sources_as_refs_diversity_negative_bleu_2"] = corpus_bleu(bleu_sources_refs, bleu_hypos, weights=(0.5, 0.5, 0, 0))
-    metrics_dict["sources_as_refs_diversity_negative_bleu_3"] = corpus_bleu(bleu_sources_refs, bleu_hypos, weights=(0.33, 0.33, 0.34, 0))
-    metrics_dict["sources_as_refs_diversity_negative_bleu_4"] = corpus_bleu(bleu_sources_refs, bleu_hypos, weights=(0.25, 0.25, 0.25, 0.25))
+    metrics_dict["sources_as_refs_diversity_negative_bleu_1"] = corpus_bleu(bleu_sources_refs, bleu_hypos,
+                                                                            weights=(1, 0, 0, 0))
+    metrics_dict["sources_as_refs_diversity_negative_bleu_2"] = corpus_bleu(bleu_sources_refs, bleu_hypos,
+                                                                            weights=(0.5, 0.5, 0, 0))
+    metrics_dict["sources_as_refs_diversity_negative_bleu_3"] = corpus_bleu(bleu_sources_refs, bleu_hypos,
+                                                                            weights=(0.33, 0.33, 0.34, 0))
+    metrics_dict["sources_as_refs_diversity_negative_bleu_4"] = corpus_bleu(bleu_sources_refs, bleu_hypos,
+                                                                            weights=(0.25, 0.25, 0.25, 0.25))
 
     if print_scores:
-        for sc in ["bleu_1", "bleu_2", "bleu_3", "bleu_4", "source_sentence_bleu_1", "source_sentence_bleu_2", "source_sentence_bleu_3", "source_sentence_bleu_4", "sources_as_refs_diversity_negative_bleu_1", "sources_as_refs_diversity_negative_bleu_2", "sources_as_refs_diversity_negative_bleu_3", "sources_as_refs_diversity_negative_bleu_4"]:
-            print(sc,"(percents):", round(metrics_dict[sc], 4) * 100)
+        for sc in ["bleu_1", "bleu_2", "bleu_3", "bleu_4", "source_sentence_bleu_1", "source_sentence_bleu_2",
+                   "source_sentence_bleu_3", "source_sentence_bleu_4", "sources_as_refs_diversity_negative_bleu_1",
+                   "sources_as_refs_diversity_negative_bleu_2", "sources_as_refs_diversity_negative_bleu_3",
+                   "sources_as_refs_diversity_negative_bleu_4"]:
+            print(sc, "(percents):", round(metrics_dict[sc], 4) * 100)
 
     return metrics_dict

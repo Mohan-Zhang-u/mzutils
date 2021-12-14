@@ -4,7 +4,7 @@ import numpy as np
 def helper_flatten(list_of_lists):
     for list in list_of_lists:
         for item in list:
-           yield item
+            yield item
 
 
 def subword_tokenize_labels(tokens, labels, tokenizer, bert_special_tokens=True):
@@ -34,7 +34,7 @@ def subword_tokenize_labels(tokens, labels, tokenizer, bert_special_tokens=True)
     if bert_special_tokens:
         subwords = ['[CLS]'] + subwords + ['[SEP]']  # 
     token_start_idxs = 1 + np.cumsum([0] + subword_lengths[:-1])
-    bert_labels = [[label] + (sublen-1) * [3] for sublen, label in zip(subword_lengths, labels)]
+    bert_labels = [[label] + (sublen - 1) * [3] for sublen, label in zip(subword_lengths, labels)]
     bert_labels = [0] + list(helper_flatten(bert_labels)) + [0]
     encoded_subwords = tokenizer.encode(subwords, add_special_tokens=False)
     assert len(subwords) == len(bert_labels)
@@ -62,7 +62,7 @@ def labels_from_subword_labels(tokens, bert_labels, tokenizer, bert_special_toke
     :return: (['John', 'Johanson', 'lives', 'in', 'Ramat', 'Gan', 'Gang', '.'], [1, 2, 0, 0, 1, 2, 2, 0])
     """
     if bert_special_tokens:
-        bert_labels = bert_labels[1:-1] # remove '[CLS]' and '[SEP]'
+        bert_labels = bert_labels[1:-1]  # remove '[CLS]' and '[SEP]'
     subwords = list(map(tokenizer.tokenize, tokens))
     # now, select correct labels according to subword length. Always select the first given label for each word.
     curr_working_idx = 0

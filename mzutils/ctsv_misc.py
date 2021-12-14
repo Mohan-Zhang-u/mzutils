@@ -2,6 +2,7 @@ import codecs
 import csv
 import os
 import sys
+
 import mzutils.list_misc
 
 
@@ -148,7 +149,6 @@ def find_max_sub_list_length(lst: list):
             max_len = len(sub_list)
             max_sub_list = sub_list
     return max_len, max_sub_list
-
 
 
 def beautify_csv_lines_horizontal(lst: list):
