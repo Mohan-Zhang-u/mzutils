@@ -2,7 +2,7 @@ import math
 
 import numpy as np
 
-import mzutils.numpy_misc
+import mzutils.numpy_funcs
 
 
 def permutation(a, b):

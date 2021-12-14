@@ -2,7 +2,7 @@ import codecs
 import json
 import os
 
-import mzutils.json_misc
+import mzutils.json_funcs
 import mzutils.os_misc
 
 

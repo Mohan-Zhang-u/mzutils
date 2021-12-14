@@ -3,7 +3,7 @@ import csv
 import os
 import sys
 
-import mzutils.list_misc
+import mzutils.list_funcs
 
 
 def write_tsv(file_path, rows):

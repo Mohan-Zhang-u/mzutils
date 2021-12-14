@@ -9,6 +9,7 @@ from inspect import getfullargspec
 
 import nltk
 
+
 def parent_dir_and_name(file_path):
     """
     >>> file_path="a/b.c"
