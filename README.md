@@ -13,11 +13,9 @@ install by [pip install mzutils](https://pypi.org/project/mzutils/)
 
 numpy
 
-nltk
-
 torch
 
-tqdm
+nltk 
 
 PyYAML (only if you want to use set_local_vars_from_yaml)
 

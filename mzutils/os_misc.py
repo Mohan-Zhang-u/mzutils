@@ -7,9 +7,7 @@ import time
 import zipfile
 from inspect import getfullargspec
 
-# dependencies
 import nltk
-
 
 def parent_dir_and_name(file_path):
     """
