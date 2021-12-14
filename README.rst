@@ -4,7 +4,7 @@
 
 The purpose of this toolkit is to reuse the code and make Mohan Zhang's life easier.
 
-detailed documentation can be found `here <mzutils.rtfd.io>`_.
+Read the documentation `here <https://mzutils.rtfd.io>`_!
 
 Install
 -------
