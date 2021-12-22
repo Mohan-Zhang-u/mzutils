@@ -12,10 +12,10 @@ mzutils.nlp\_tasks.data\_preprocessing module
    :undoc-members:
    :show-inheritance:
 
-mzutils.nlp\_tasks.ner\_misc module
+mzutils.nlp\_tasks.ner\_funcs module
 -----------------------------------
 
-.. automodule:: mzutils.nlp_tasks.ner_misc
+.. automodule:: mzutils.nlp_tasks.ner_funcs
    :members:
    :undoc-members:
    :show-inheritance:

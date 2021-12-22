@@ -6,9 +6,9 @@ from .json_funcs import *
 from .list_funcs import *
 from .nlp_tasks import *
 from .numpy_funcs import *
-from .os_misc import *
+from .os_funcs import *
 from .parser import *
-from .probabilities_misc import *
+from .probabilities_funcs import *
 from .serialize_funcs import *
 from .string_funcs import *
 from .tf_funcs import *

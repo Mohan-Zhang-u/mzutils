@@ -3,7 +3,7 @@ import json
 import os
 
 import mzutils.json_funcs
-import mzutils.os_misc
+import mzutils.os_funcs
 
 
 # ---------------------------------SQuAD 1.1 Functionss---------------------------------
@@ -58,9 +58,9 @@ def generate_multi_test_cases(list_of_paragraphs, list_of_questions, json_store_
 
 
 def simple_squad_segmentor(squad_file_path, store_location, num_of_paragraphs=500):
-    mzutils.os_misc.mkdir_p(store_location)
-    squad_file_name = mzutils.os_misc.basename_and_extension(squad_file_path)[0]
-    squad_file_data = mzutils.json_misc.load_config(squad_file_path)["data"]
+    mzutils.os_funcs.mkdir_p(store_location)
+    squad_file_name = mzutils.os_funcs.basename_and_extension(squad_file_path)[0]
+    squad_file_data = mzutils.json_funcs.load_config(squad_file_path)["data"]
     epoch = len(squad_file_data) // num_of_paragraphs + 1
     for i in range(epoch):
         store_dict = {"data": squad_file_data[(i * num_of_paragraphs):((i + 1) * num_of_paragraphs)], "version": "1.1"}
@@ -90,7 +90,7 @@ def retrieve_questions_from_triviaQA(file_path, destination_path=None):
     None and write {"data": [{"Question" : "", "QuestionId" : "", "AcceptableAnswers" : ""}]}
     """
     return_list = []
-    data_list = mzutils.json_misc.load_config(file_path)["Data"]
+    data_list = mzutils.json_funcs.load_config(file_path)["Data"]
     for data in data_list:
         AcceptableAnswers = data["Answer"]["Aliases"] + data["Answer"]["NormalizedAliases"] + [
             data["Answer"]["NormalizedValue"]]
@@ -99,7 +99,7 @@ def retrieve_questions_from_triviaQA(file_path, destination_path=None):
     if not destination_path:
         return return_list
     else:
-        mzutils.json_misc.dump_config(destination_path, {"data": return_list})
+        mzutils.json_funcs.dump_config(destination_path, {"data": return_list})
 
 
 def generate_multi_test_cases_triviaQA(retrieved_json_path, json_store_path, documents_path, missing_file_path=None):
@@ -112,7 +112,7 @@ def generate_multi_test_cases_triviaQA(retrieved_json_path, json_store_path, doc
         "[0, 0, 'tc_1250', ['The Swiss Miss', 'Martina hingis', 'Martina Hingisov\u00e1', 'Martina Hingis', 'MartinaHingis', 'Martina Hingisova', 'Hingis', 'hingis', 'swiss miss', 'martina hingis', 'martina hingisova', 'martinahingis', 'martina hingisov\u00e1', 'martina hingis']]": "Li Na",
     }
     """
-    retrieved_list = mzutils.json_misc.load_config(retrieved_json_path)['data']
+    retrieved_list = mzutils.json_funcs.load_config(retrieved_json_path)['data']
     missing_files = []
 
     data = []
@@ -179,6 +179,6 @@ def concatenate_predictions_dicts(squadjsons_files_dir, output_file=None):
                                          "squadjsons" + str(dir_num))  # this is the path of directory squadjsons%d
         if not os.path.isdir(squadjsonsnum_dir):
             break
-        output_dict.update(mzutils.json_misc.load_config(os.path.join(squadjsonsnum_dir, "predictions.json")))
+        output_dict.update(mzutils.json_funcs.load_config(os.path.join(squadjsonsnum_dir, "predictions.json")))
         dir_num += 1
-    mzutils.json_misc.dump_config(output_file, output_dict)
+    mzutils.json_funcs.dump_config(output_file, output_dict)

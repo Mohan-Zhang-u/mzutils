@@ -68,10 +68,10 @@ mzutils.numpy\_funcs module
    :undoc-members:
    :show-inheritance:
 
-mzutils.os\_misc module
+mzutils.os\_funcs module
 -----------------------
 
-.. automodule:: mzutils.os_misc
+.. automodule:: mzutils.os_funcs
    :members:
    :undoc-members:
    :show-inheritance:
@@ -84,10 +84,10 @@ mzutils.parser module
    :undoc-members:
    :show-inheritance:
 
-mzutils.probabilities\_misc module
+mzutils.probabilities\_funcs module
 ----------------------------------
 
-.. automodule:: mzutils.probabilities_misc
+.. automodule:: mzutils.probabilities_funcs
    :members:
    :undoc-members:
    :show-inheritance:

@@ -125,7 +125,7 @@ def segment_large_tsv(file_path, destination_path, segmentation_length, duplicat
 
 def save_tsv_as_csv(tsv_file, csv_file=None):
     csv.field_size_limit(sys.maxsize)
-    from mzutils.os_misc import parent_dir_and_name, basename_and_extension
+    from mzutils.os_funcs import parent_dir_and_name, basename_and_extension
     with codecs.open(tsv_file, "r", encoding="utf-8") as tfp:
         if csv_file is None:
             csv_file = os.path.join(parent_dir_and_name(tsv_file)[0], basename_and_extension(tsv_file)[0]) + '.csv'
@@ -159,7 +159,7 @@ def beautify_csv_lines_horizontal(lst: list):
     lst = lst.copy()
     max_len, _ = find_max_sub_list_length(lst)
     for i in range(len(lst)):
-        lst[i] = mzutils.list_misc.pad_list(lst[i], max_len)
+        lst[i] = mzutils.list_funcs.pad_list(lst[i], max_len)
     return lst
 
 
