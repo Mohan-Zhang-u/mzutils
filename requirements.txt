@@ -5,4 +5,5 @@ sphinx_rtd_theme>=1.0.0
 linkify-it-py
 numpy
 torch
+torchvision
 nltk

@@ -1,6 +1,6 @@
 import sys
-
 import torch
+import torchvision
 
 
 def model_params(model: torch.nn.Module) -> int:
@@ -81,3 +81,38 @@ class LabelSmoothingLoss(torch.nn.Module):
             true_dist.fill_(self.smoothing / (self.cls - 1))
             true_dist.scatter_(1, target.data.unsqueeze(1), self.confidence)
         return torch.mean(torch.sum(-true_dist * pred, dim=self.dim))
+
+
+class PadCenterCrop(object):
+    def __init__(self, size, pad_if_needed=True, fill=0, padding_mode='constant'):
+        """[summary]
+
+        Args:
+            size ([type]): same as torchvision.transforms.CenterCrop's size
+            pad_if_needed (bool, optional): Defaults to True. if True, behave the same as CenterCrop.
+            fill ([type], optional): same as torchvision.transforms.Pad's fill. Defaults to 0.
+            padding_mode ([type], optional): same as torchvision.transforms.Pad's padding_mode. Defaults to 0.
+        """
+        if isinstance(size, (int, float)):
+            self.size = (int(size), int(size))
+        else:
+            self.size = size
+        self.pad_if_needed = pad_if_needed
+        self.padding_mode = padding_mode
+        self.fill = fill
+
+    def __call__(self, img):
+        # pad the width if needed
+        if self.pad_if_needed and img.size[0] < self.size[1]:
+            img = torchvision.transforms.functional.pad(img, (self.size[1] - img.size[0], 0), self.fill, self.padding_mode)
+        # pad the height if needed
+        if self.pad_if_needed and img.size[1] < self.size[0]:
+            img = torchvision.transforms.functional.pad(img, (0, self.size[0] - img.size[1]), self.fill, self.padding_mode)
+
+        return torchvision.transforms.functional.center_crop(img, self.size)
+
+encode_transform = torchvision.transforms.Compose(
+    [
+        PadCenterCrop(2048, pad_if_needed=True, fill='white'),
+    ]
+)
