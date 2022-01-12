@@ -1,4 +1,5 @@
 import sys
+import numpy as np
 import torch
 import torchvision
 
@@ -85,8 +86,15 @@ class LabelSmoothingLoss(torch.nn.Module):
 
 class PadCenterCrop(object):
     def __init__(self, size, pad_if_needed=True, fill=0, padding_mode='constant'):
-        """[summary]
-
+        """useage:
+        encode_transform = torchvision.transforms.Compose(
+            [
+                PadCenterCrop(2048, pad_if_needed=True, fill='white'),
+            ]
+        )
+        a=Image.open('1.jpg')
+        encode_transform(a)
+        
         Args:
             size ([type]): same as torchvision.transforms.CenterCrop's size
             pad_if_needed (bool, optional): Defaults to True. if True, behave the same as CenterCrop.
@@ -111,8 +119,86 @@ class PadCenterCrop(object):
 
         return torchvision.transforms.functional.center_crop(img, self.size)
 
-encode_transform = torchvision.transforms.Compose(
-    [
-        PadCenterCrop(2048, pad_if_needed=True, fill='white'),
-    ]
-)
+class ImageExperimentProcessor:
+    def __init__(self, image_size, pad_center_crop=False, resize=True, to_tensor=True, normalize=True, normalize_mean=np.array([0.485, 0.456, 0.406]), normalize_std=np.array([0.229, 0.224, 0.225])):
+        self.image_size = image_size
+        self.pad_center_crop = pad_center_crop
+        self.resize = resize
+        self.to_tensor = to_tensor
+        self.normalize = normalize
+        self.normalize_mean = normalize_mean
+        self.normalize_std = normalize_std
+        
+    def preprocess_transform_one_img(self, pil_img):
+        """
+        img_tensor is one image tensor whose len of shape is 3.
+        order:
+        PadCenterCrop,
+        Resize,
+        ToTensor
+        Normalize,
+        """
+        w, h = pil_img.size
+        transform_list = []
+        if self.pad_center_crop:
+            max_len = max(w, h)
+            transform_list.append(PadCenterCrop(max_len, pad_if_needed=True, fill='white'))
+        if self.resize:
+            transform_list.append(torchvision.transforms.Resize(size=(self.image_size, self.image_size))) # h, w
+        if self.to_tensor:
+            transform_list.append(torchvision.transforms.ToTensor())
+        if self.normalize:
+            transform_list.append(torchvision.transforms.Normalize(self.normalize_mean.tolist(), self.normalize_std.tolist()))
+        encode_transform = torchvision.transforms.Compose(transform_list)
+        img_tensor = encode_transform(pil_img)
+        # pil_img.save('pil_img.jpg')
+        return img_tensor
+    
+    def preprocess_transform_imgs(self, pil_imgs, device='cpu'):
+        """
+        pil_imgs: list of PIL.Image
+        """
+        img_sizes = [img.size for img in pil_imgs] # [(w, h)]
+        img_tensors = [self.preprocess_transform_one_img(pil_img) for pil_img in pil_imgs]
+        img_tensors = torch.stack(img_tensors).to(device)
+        return img_tensors, img_sizes
+    
+    def postprocess_transform_one_tensor(self, img_tensor, h=256, w=256):
+        """
+        img_tensor is one image tensor whose len of shape is 3.
+        Normalize,
+        ToPILImage,
+        Resize,
+        PadCenterCrop,
+        """
+        transform_list = []
+        if self.normalize:
+            transform_list.append(torchvision.transforms.Normalize((-self.normalize_mean / self.normalize_std).tolist(), (1.0 / self.normalize_std).tolist()))
+        if self.to_tensor:
+            transform_list.append(torchvision.transforms.ToPILImage())
+        if self.pad_center_crop:
+            if self.resize:
+                max_len = max(w, h)
+                transform_list.append(torchvision.transforms.Resize(size=(max_len, max_len)))
+            transform_list.append(torchvision.transforms.CenterCrop(size=(h, w)))
+            
+        else:
+            if self.resize:
+                transform_list.append(torchvision.transforms.Resize(size=(h, w)))
+        decode_transform = torchvision.transforms.Compose(transform_list)
+        pil_img = decode_transform(img_tensor)
+        # pil_img.save('pil_img.jpg')
+        return pil_img
+    
+    def postprocess_transform_tensors(self, img_tensors, img_sizes):
+        """
+        img_tensors: list of torch.Tensor or torch.Tensor of torch.Size([c, self.image_height, self.image_width])
+            or a torch.Tensor of torch.Size([img.shape[0], c, self.image_height, self.image_width])
+        img_sizes: list of (w, h)
+        """
+        assert len(img_tensors) == len(img_sizes)
+        converted_imgs = []
+        for i in range(len(img_tensors)):
+            converted_img = self.postprocess_transform_one_tensor(img_tensors[i], w=img_sizes[i][0], h=img_sizes[i][1])
+            converted_imgs.append(converted_img)
+        return converted_imgs
