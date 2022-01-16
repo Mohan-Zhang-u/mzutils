@@ -2,6 +2,7 @@ import sys
 import numpy as np
 import torch
 import torchvision
+from torch.cuda.amp import custom_bwd, custom_fwd
 
 
 def model_params(model: torch.nn.Module) -> int:
@@ -82,6 +83,57 @@ class LabelSmoothingLoss(torch.nn.Module):
             true_dist.fill_(self.smoothing / (self.cls - 1))
             true_dist.scatter_(1, target.data.unsqueeze(1), self.confidence)
         return torch.mean(torch.sum(-true_dist * pred, dim=self.dim))
+
+
+class DifferentiableClamp(torch.autograd.Function):
+    """
+    In the forward pass this operation behaves like torch.clamp.
+    But in the backward pass its gradient is 1 everywhere, as if instead of clamp one had used the identity function.
+    """
+
+    @staticmethod
+    @custom_fwd
+    def forward(ctx, input, min, max):
+        return input.clamp(min=min, max=max)
+
+    @staticmethod
+    @custom_bwd
+    def backward(ctx, grad_output):
+        return grad_output.clone(), None, None
+
+
+def differentiable_clamp(input, min, max):
+    """
+    Like torch.clamp, but with a constant 1-gradient.
+    :param input: The input that is to be clamped.
+    :param min: The minimum value of the output.
+    :param max: The maximum value of the output.
+    >>> x=torch.from_numpy(np.array(([0])).astype(np.float32)).requires_grad_()
+    >>> a=torch.from_numpy(np.array(([1])).astype(np.float32))
+    >>> a.require_grad=False
+    >>> (x - a).pow(2).backward()
+    >>> x.grad
+    tensor([-2.])
+    >>> x=torch.from_numpy(np.array(([0])).astype(np.float32)).requires_grad_()
+    >>> a=torch.from_numpy(np.array(([1])).astype(np.float32))
+    >>> a.require_grad=False
+    >>> (x.clamp(min=0.5) - a).pow(2).backward()
+    >>> x.grad
+    tensor([0.])
+    >>> x=torch.from_numpy(np.array(([0])).astype(np.float32)).requires_grad_()
+    >>> a=torch.from_numpy(np.array(([1])).astype(np.float32))
+    >>> a.require_grad=False
+    >>> (differentiable_clamp(x, min=-0.5, max=2) - a).pow(2).backward()
+    >>> x.grad
+    tensor([-2.])
+    >>> x=torch.from_numpy(np.array(([0])).astype(np.float32)).requires_grad_()
+    >>> a=torch.from_numpy(np.array(([1])).astype(np.float32))
+    >>> a.require_grad=False
+    >>> (differentiable_clamp(x, min=0.5, max=2) - a).pow(2).backward()
+    >>> x.grad
+    tensor([-1.])
+    """
+    return DifferentiableClamp.apply(input, min, max)
 
 
 class PadCenterCrop(object):
