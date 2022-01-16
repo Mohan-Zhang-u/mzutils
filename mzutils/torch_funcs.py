@@ -146,7 +146,7 @@ class ImageExperimentProcessor:
         if self.resize:
             transform_list.append(torchvision.transforms.Resize(size=(self.image_size, self.image_size))) # h, w
         if self.to_tensor:
-            transform_list.append(torchvision.transforms.ToTensor())
+            transform_list.append(torchvision.transforms.ToTensor()) # input image is scaled to [0.0, 1.0]
         if self.normalize:
             transform_list.append(torchvision.transforms.Normalize(self.normalize_mean.tolist(), self.normalize_std.tolist()))
         encode_transform = torchvision.transforms.Compose(transform_list)
