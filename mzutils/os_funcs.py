@@ -32,7 +32,7 @@ def basename_and_extension(file_path):
     return os.path.splitext(os.path.basename(file_path))
 
 
-def get_things_in_loc(in_path, just_files=True):
+def get_things_in_loc(in_path, just_files=True, endswith=None):
     """
     in_path can be file path or dir path.
     This function return a list of file paths
@@ -40,6 +40,7 @@ def get_things_in_loc(in_path, just_files=True):
     parent path of in_path if it is not a dir.
     just_files=False will let the function go recursively
     into the subdirs.
+    :endswith: None or a list of file extensions (to end with).
     """
     # TODO: check for file
     if not os.path.exists(in_path):
@@ -50,12 +51,13 @@ def get_things_in_loc(in_path, just_files=True):
         in_path = parent_dir_and_name(in_path)[0]
 
     for name in os.listdir(in_path):
-        name_path = os.path.abspath(os.path.join(in_path, name))
-        if os.path.isfile(name_path):
-            re_list.append(name_path)
-        elif not just_files:
-            if os.path.isdir(name_path):
-                re_list += get_things_in_loc(name_path, just_files)
+        if endswith is None or (True in [name.endswith(ext) for ext in endswith]):
+            name_path = os.path.abspath(os.path.join(in_path, name))
+            if os.path.isfile(name_path):
+                re_list.append(name_path)
+            elif not just_files:
+                if os.path.isdir(name_path):
+                    re_list += get_things_in_loc(name_path, just_files)
     return re_list
 
 
