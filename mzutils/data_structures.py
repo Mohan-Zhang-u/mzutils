@@ -2,7 +2,7 @@ import heapq
 import os
 import pandas as pd
         
-from os_funcs import mkdir_p, get_things_in_loc
+from .os_funcs import mkdir_p, get_things_in_loc
 
 
 class SimplePriorityQueue():
