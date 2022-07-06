@@ -254,3 +254,24 @@ class ImageExperimentProcessor:
             converted_img = self.postprocess_transform_one_tensor(img_tensors[i], w=img_sizes[i][0], h=img_sizes[i][1])
             converted_imgs.append(converted_img)
         return converted_imgs
+
+
+def exact_matches(pred):
+    """for sequence classification tasks using huggingface transformers, this is a togo evaluation metric.
+    Just set compute_metrics=exact_matches in trainer. The evaluation will return exact_matches.
+
+    Args:
+        pred (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """
+    labels = pred.label_ids
+    preds = pred.predictions.argmax(-1)
+    assert len(labels) == len(preds)
+    matches_arr = (labels == preds)
+    matches = matches_arr.sum()
+    exact_match = (matches + 0.0) / len(labels)
+    return {
+        'exact_match': exact_match,
+    }
