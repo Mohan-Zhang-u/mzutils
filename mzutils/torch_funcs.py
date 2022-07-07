@@ -267,11 +267,66 @@ def exact_matches(pred):
         _type_: _description_
     """
     labels = pred.label_ids
-    preds = pred.predictions.argmax(-1)
-    assert len(labels) == len(preds)
-    matches_arr = (labels == preds)
+    predictions = pred.predictions.argmax(-1)
+    assert len(labels) == len(predictions)
+    matches_arr = (labels == predictions)
     matches = matches_arr.sum()
     exact_match = (matches + 0.0) / len(labels)
+    return {
+        'exact_match': exact_match,
+    }
+
+
+def multi_label_predictions(predictions, threshold=0.5):
+    """_summary_
+
+    Args:
+        predictions (tensor): N by C tensor of probabilities (after sigmoid), where N is the number of data points and C is the number of labels.
+    """    
+    return torch.where(predictions > threshold, 1., 0.)
+
+
+def multi_label_exact_matches(pred):
+    """for multi-label sequence classification tasks using huggingface transformers, this is a togo evaluation metric.
+    Just set compute_metrics=multi_label_exact_matches in trainer. The evaluation will return exact_matches.
+
+    Args:
+        pred (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """
+    labels = torch.from_numpy(pred.label_ids) # ground truth
+    predictions = torch.sigmoid(torch.from_numpy(pred.predictions)) # output before logits
+    exact_predictions = multi_label_predictions(predictions)
+    assert labels.shape == exact_predictions.shape 
+    matches_arr = (labels == exact_predictions)
+    matches = matches_arr.sum()
+    exact_match = (matches + 0.0) / torch.numel(labels)
+    
+    return {
+        'exact_match': exact_match,
+    }
+
+
+def top_x_multi_label_exact_matches(pred, num_labels):
+    """same as multi_label_exact_matches but only for the first num_labels labels.
+
+    Args:
+        pred (_type_): _description_
+        num_labels (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """
+    labels = torch.from_numpy(pred.label_ids[:,:num_labels]) # ground truth
+    predictions = torch.sigmoid(torch.from_numpy(pred.predictions[:,:num_labels])) # output before logits
+    exact_predictions = multi_label_predictions(predictions)
+    assert labels.shape == exact_predictions.shape 
+    matches_arr = (labels == exact_predictions)
+    matches = matches_arr.sum()
+    exact_match = (matches + 0.0) / torch.numel(labels)
+    
     return {
         'exact_match': exact_match,
     }
