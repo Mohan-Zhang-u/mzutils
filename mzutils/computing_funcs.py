@@ -111,6 +111,13 @@ def argmax_decorator(l, decorator_length):
 def multi_label_cosine_similarity(labels):
     """
     returns the cosine similarity between each label in the multi-label classification task.
+    
+    note that you can also plot the heatmap with the following code:
+    >>> import seaborn as sn
+    >>> import matplotlib.pyplot as plt
+    >>> c = multi_label_cosine_similarity(labels)
+    >>> sn.heatmap(c, annot=True, cmap="BuPu")
+    >>> plt.show()
 
     Args:
         labels (_type_): labels is a N by C matrix, where N is the number of data points and C is the number of labels.
