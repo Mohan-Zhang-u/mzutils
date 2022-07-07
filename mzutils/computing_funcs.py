@@ -2,6 +2,7 @@ import random
 import sys
 
 import numpy as np
+import sklearn
 
 
 # source: https://stackoverflow.com/questions/5807047/efficient-way-to-take-the-minimum-maximum-n-values-and-indices-from-a-matrix-usi
@@ -105,3 +106,17 @@ def argmax_decorator(l, decorator_length):
             sum += (lpad[i + j] + lpad[i - j]) / (j + 1)
         ltrans.append(sum)
     return ltrans
+
+
+def multi_label_cosine_similarity(labels):
+    """
+    returns the cosine similarity between each label in the multi-label classification task.
+
+    Args:
+        labels (_type_): labels is a N by C matrix, where N is the number of data points and C is the number of labels.
+        
+    Returns:
+        C by C matrix with cosine similarity.
+    """
+    labels = np.array(labels)
+    return 1 - sklearn.metrics.pairwise_distances(labels.transpose(), metric='cosine')

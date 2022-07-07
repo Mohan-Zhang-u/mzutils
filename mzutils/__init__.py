@@ -5,7 +5,7 @@ from .gym_space_management import *
 from .json_funcs import *
 from .list_funcs import *
 from .nlp_tasks import *
-from .numpy_funcs import *
+from .computing_funcs import *
 from .os_funcs import *
 from .parser import *
 from .probabilities_funcs import *

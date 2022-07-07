@@ -2,7 +2,7 @@ import math
 
 import numpy as np
 
-import mzutils.numpy_funcs
+import mzutils.computing_funcs
 
 
 def permutation(a, b):
@@ -50,7 +50,7 @@ def vote_for_cluster(elements, vote_metric, top_n=1, default_element=None):
             matrix[i, j] = vote_metric(elements[i], elements[j])
             matrix[j, i] = vote_metric(elements[j], elements[i])
     voted_weights = matrix.sum(axis=0)
-    max_weights_indices = mzutils.numpy_funcs.argmax_indices(voted_weights, top_n)
+    max_weights_indices = mzutils.computing_funcs.argmax_indices(voted_weights, top_n)
     max_weights_values = np.take(voted_weights, max_weights_indices)
     re_list = []
     for i in range(top_n):
