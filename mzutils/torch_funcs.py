@@ -1,5 +1,6 @@
 import sys
 import numpy as np
+import sklearn
 import torch
 import torchvision
 from torch.cuda.amp import custom_bwd, custom_fwd
@@ -256,7 +257,7 @@ class ImageExperimentProcessor:
         return converted_imgs
 
 
-def exact_matches(pred):
+def exact_matches(pred, log_confusion_matrix=False):
     """for sequence classification tasks using huggingface transformers, this is a togo evaluation metric.
     Just set compute_metrics=exact_matches in trainer. The evaluation will return exact_matches.
 
@@ -272,9 +273,13 @@ def exact_matches(pred):
     matches_arr = (labels == predictions)
     matches = matches_arr.sum()
     exact_match = (matches + 0.0) / len(labels)
-    return {
-        'exact_match': exact_match,
+    r_dict = {
+        'exact_match': exact_match,  
     }
+    if log_confusion_matrix:
+        confusion_matrix = sklearn.metrics.confusion_matrix(labels, predictions)
+        r_dict['confusion_matrix'] = confusion_matrix
+    return r_dict
 
 
 def multi_label_predictions(predictions, threshold=0.5):
