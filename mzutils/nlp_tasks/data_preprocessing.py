@@ -159,7 +159,7 @@ def generate_multi_test_cases_triviaQA(retrieved_json_path, json_store_path, doc
 
 
 def concatenate_predictions_dicts(squadjsons_files_dir, output_file=None):
-    """
+    """concatenate_predictions_dicts.
 
     :param squadjsons_files_dir: should be one of "wikipedia-train" "wikipedia-dev" "web-train" "web-dev" "verified-web-dev" "verified-wikipedia-dev"
     it is actually a directory with format:

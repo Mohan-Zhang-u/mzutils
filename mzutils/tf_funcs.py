@@ -19,18 +19,21 @@ def torchlike_gather(params, axis, indices, name=None):
     In the case in which indices is a 1D tensor, this operation is equivalent to
     `tf.gather`.
     See also `tf.gather` and `tf.gather_nd`.
+    
     Args:
-      params: A `Tensor`. The tensor from which to gather values.
-      indices: A `Tensor`. Must be one of the following types: int32, int64. Index
-          tensor. Must be in range `[0, params.shape[axis]`, where `axis` is the
-          last dimension of `indices` itself.
-      axis: A `Tensor`. Must be one of the following types: int32, int64. The axis
+        params: A `Tensor`. The tensor from which to gather values.
+        indices: A `Tensor`. Must be one of the following types: int32, int64. Index
+            tensor. Must be in range `[0, params.shape[axis]`, where `axis` is the
+            last dimension of `indices` itself.
+        axis: A `Tensor`. Must be one of the following types: int32, int64. The axis
             in `params` to gather `indices` from.
-      name: A name for the operation (optional).
+        name: A name for the operation (optional).
+    
     Returns:
-      A Tensor. Has the same type as `params`.
+        A Tensor. Has the same type as `params`.
+    
     Raises:
-      ValueError: if `indices` has an unknown shape.
+        ValueError: if `indices` has an unknown shape.
     """
     import tensorflow as tf
     with tf.python.framework.ops.name_scope(name):

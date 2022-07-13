@@ -209,10 +209,12 @@ def file_detag(file_path, tags):
 
 def char_in_language(in_char, expected=None):
     """
+    https://www.andiamo.co.uk/resources/iso-language-codes/
     :param in_char: single utf-8 input char
     :param expected: whether the char is in expected range or not.
     :return: 'num' (numbers), 'alphabet' (english alphabets), 'ascii' (ascii strings) the lanuge code. If expected range is provided, returns whether the char is in the expected range or not.
-    https://www.andiamo.co.uk/resources/iso-language-codes/
+    
+    
     >>> print(char_in_language('1', 'alphabet'))
     False
     >>> print(char_in_language('a', 'ascii'))

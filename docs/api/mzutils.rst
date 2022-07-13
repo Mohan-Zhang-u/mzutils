@@ -69,7 +69,7 @@ mzutils.numpy\_funcs module
    :show-inheritance:
 
 mzutils.os\_funcs module
------------------------
+------------------------
 
 .. automodule:: mzutils.os_funcs
    :members:
@@ -85,7 +85,7 @@ mzutils.parser module
    :show-inheritance:
 
 mzutils.probabilities\_funcs module
-----------------------------------
+-----------------------------------
 
 .. automodule:: mzutils.probabilities_funcs
    :members:
