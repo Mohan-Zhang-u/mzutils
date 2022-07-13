@@ -38,10 +38,6 @@ def replace_nth_occur(InputText, old, new, n=0, option='only nth'):
 
 
 def add_spaces_between_special_characters(InputText):
-    """
-    :param InputText:
-    :return:
-    """
     regular = "1234567890qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM "
     b = set(list(InputText))
     spec = []
@@ -58,22 +54,15 @@ def select_first_sentence(InputText, language='english'):
 
 
 def py_serialize(filepath, itemlist):
-    """
-    serialize python objects using pickle
-    :param filepath:
-    :param itemlist:
-    :return:
+    """segment a long document to several small documents based on the nltk tokenized word length.
+    sentence structure will be kept.
+
     """
     with codecs.open(filepath, "wb+") as fp:
         pickle.dump(itemlist, fp)
 
 
 def py_deserialize(filepath):
-    """
-
-    :param filepath:
-    :return:
-    """
     itemlist = None
     with codecs.open(filepath, 'rb') as fp:
         itemlist = pickle.load(fp)
@@ -81,22 +70,22 @@ def py_deserialize(filepath):
 
 
 def str_rep_to_list(s):
-    """
-    convert a string representation of list to a python list object.
-    :param s:
-    :return:
+    """convert a string representation of list to a python list object.
     """
     return ast.literal_eval(s)
 
 
 def string_segementor_on_word_length(content, max_length, language='english'):
-    """
-    segment a long document to several small documents based on the nltk tokenized word length.
+    """segment a long document to several small documents based on the nltk tokenized word length.
     sentence structure will be kept.
-    :param content: content to be segmented by world length, with complete sentences.
-    :param max_length: document segments' max length.
-    :param language: for the use of nltk, default english.
-    :return: a list of segmented contents
+
+    Args:
+        content (str): content to be segmented by world length, with complete sentences.
+        max_length (int): document segments' max length.
+        language (str, optional): for the use of nltk. Defaults to 'english'.
+
+    Returns:
+        _type_: a list of segmented contents
     """
     contents = []
     sentences = nltk.sent_tokenize(content, language)
@@ -129,12 +118,16 @@ def string_segementor_on_word_length(content, max_length, language='english'):
 
 
 def chinese_document_segementor_on_word_length(content, max_length):
-    """
-    segment a long document to several small documents based on the nltk tokenized word length.
+    
+    """segment a long document to several small documents based on the nltk tokenized word length.
     sentence structure will be kept.
-    :param content: content to be segmented by world length, with complete sentences.
-    :param max_length: document segments' max length.
-    :return: a list of segmented contents
+
+    Args:
+        content (str): content to be segmented by world length, with complete sentences.
+        max_length (int): document segments' max length.
+
+    Returns:
+        _type_: a list of segmented contents
     """
     contents = []
     sentences = chinese_sent_tokenize(content, max_length)
