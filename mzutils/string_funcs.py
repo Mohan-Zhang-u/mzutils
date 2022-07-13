@@ -85,7 +85,7 @@ def string_segementor_on_word_length(content, max_length, language='english'):
         language (str, optional): for the use of nltk. Defaults to 'english'.
 
     Returns:
-        _type_: a list of segmented contents
+        list of str: a list of segmented contents
     """
     contents = []
     sentences = nltk.sent_tokenize(content, language)

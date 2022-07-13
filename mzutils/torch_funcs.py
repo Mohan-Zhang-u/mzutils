@@ -296,10 +296,10 @@ def multi_label_exact_matches(pred):
     Just set compute_metrics=multi_label_exact_matches in trainer. The evaluation will return exact_matches.
 
     Args:
-        pred (_type_): _description_
+        pred (_type_): pred returned by huggingface trainer
 
     Returns:
-        _type_: _description_
+        dict: metrics
     """
     labels = torch.from_numpy(pred.label_ids) # ground truth
     predictions = torch.sigmoid(torch.from_numpy(pred.predictions)) # output before logits
