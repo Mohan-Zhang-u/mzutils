@@ -9,7 +9,7 @@ https://dzone.com/articles/executable-package-pip-install
 https://python-packaging.readthedocs.io/en/latest/
 pip install --upgrade pip setuptools wheel
 pip install tqdm
-pip install --user --upgrade twine
+pip install twine==3.7.1
 
 then, create setup.py (edit the version)
 
