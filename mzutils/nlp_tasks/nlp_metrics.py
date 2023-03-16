@@ -2,6 +2,35 @@ import copy
 
 from nltk.tokenize import word_tokenize
 from nltk.translate.bleu_score import corpus_bleu
+import torch
+import numpy as np
+
+
+def compute_sentence_pseudo_mlm_perplexity(model, tokenizer, sentence: str,  mask_token: str='[MASK]'):
+    """Compute perplexity of a sentence using pseudo MLM.
+    contrary to https://huggingface.co/docs/transformers/perplexity, we use
+    diagonal masking to compute the model confusion.
+
+    Args:
+        model (_type_): e.g. BertForMaskedLM.from_pretrained('bert-base-uncased')
+        tokenizer (_type_): e.g. BertTokenizer.from_pretrained('bert-base-uncased')
+        sentence (str): _description_
+        mask_token (str, optional): _description_
+
+    Returns:
+        _type_: _description_
+    """
+    tensor_input = tokenizer.encode(sentence, return_tensors='pt') # [CLS], setence, [SEP]
+    repeat_input = tensor_input.repeat(tensor_input.size(-1)-2, 1)
+    mask = torch.ones(tensor_input.size(-1) - 1).diag(1)[:-2]
+    masked_input = repeat_input.masked_fill(mask == 1, tokenizer.convert_tokens_to_ids('[MASK]'))
+    # Using -100 to ignore the tokens not included in the loss computing. So we just compute over the cared tokens.
+    labels = repeat_input.masked_fill( masked_input != tokenizer.convert_tokens_to_ids('[MASK]'), -100) 
+    with torch.inference_mode():
+        loss = model(masked_input, labels=labels).loss
+        # loss,_ = model(masked_input, masked_lm_labels=labels) # this is for older version of transformers
+    result = np.exp(loss.item())
+    return result
 
 
 def rouge_helper_prepare_results(m, p, r, f):
