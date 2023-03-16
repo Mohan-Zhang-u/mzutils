@@ -20,14 +20,18 @@ def compute_sentence_pseudo_mlm_perplexity(model, tokenizer, sentence: str,  mas
     Returns:
         _type_: _description_
     """
-    tensor_input = tokenizer.encode(sentence, return_tensors='pt', max_length=max_length) # [CLS], setence, [SEP]
+    tensor_input = tokenizer.encode(sentence, return_tensors='pt', max_length=max_length, truncation=True) # [CLS], setence, [SEP]
     repeat_input = tensor_input.repeat(tensor_input.size(-1)-2, 1)
     mask = torch.ones(tensor_input.size(-1) - 1).diag(1)[:-2]
     masked_input = repeat_input.masked_fill(mask == 1, tokenizer.convert_tokens_to_ids('[MASK]'))
     # Using -100 to ignore the tokens not included in the loss computing. So we just compute over the cared tokens.
     labels = repeat_input.masked_fill( masked_input != tokenizer.convert_tokens_to_ids('[MASK]'), -100) 
     with torch.inference_mode():
-        loss = model(masked_input.to(model.device), labels=labels.to(model.device)).loss
+        masked_input=masked_input.to(model.device)
+        labels=labels.to(model.device)
+        loss = model(masked_input, labels=labels).loss
+        del masked_input
+        del labels
         # loss,_ = model(masked_input, masked_lm_labels=labels) # this is for older version of transformers
     result = np.exp(loss.item())
     if model.device.type == 'cuda' and empty_cache:
