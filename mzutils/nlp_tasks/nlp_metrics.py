@@ -6,7 +6,7 @@ import torch
 import numpy as np
 
 
-def compute_sentence_pseudo_mlm_perplexity(model, tokenizer, sentence: str,  mask_token: str = '[MASK]', max_length: int = 512, empty_cache: bool = True):
+def compute_sentence_pseudo_mlm_perplexity(model, tokenizer, sentence: str,  mask_token: str = '[MASK]', max_length: int = 512, empty_cache: bool = False, batch_size=64):
     """Compute perplexity of a sentence using pseudo MLM.
     contrary to https://huggingface.co/docs/transformers/perplexity, we use
     diagonal masking to compute the model confusion.
@@ -17,6 +17,8 @@ def compute_sentence_pseudo_mlm_perplexity(model, tokenizer, sentence: str,  mas
         sentence (str): _description_
         mask_token (str, optional): _description_
         max_length (int, optional): _description_
+        empty_cache (bool, optional): Default to False.
+        batch_size (int, optional): _description_
     Returns:
         _type_: _description_
     """
@@ -29,11 +31,13 @@ def compute_sentence_pseudo_mlm_perplexity(model, tokenizer, sentence: str,  mas
     with torch.inference_mode():
         masked_input=masked_input.to(model.device)
         labels=labels.to(model.device)
-        loss = model(masked_input, labels=labels).loss
+        total_loss = 0.
+        for i in range(masked_input.shape[0]//batch_size + 1):
+            total_loss += model(masked_input[i*batch_size:(i+1)*batch_size], labels=labels[i*batch_size:(i+1)*batch_size]).loss.item()
         del masked_input
         del labels
         # loss,_ = model(masked_input, masked_lm_labels=labels) # this is for older version of transformers
-    result = np.exp(loss.item())
+    result = np.exp(total_loss)
     if model.device.type == 'cuda' and empty_cache:
         torch.cuda.empty_cache()
     return result
