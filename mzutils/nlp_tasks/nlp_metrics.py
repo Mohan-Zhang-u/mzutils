@@ -29,16 +29,19 @@ def compute_sentence_pseudo_mlm_perplexity(model, tokenizer, sentence: str,  mas
     # Using -100 to ignore the tokens not included in the loss computing. So we just compute over the cared tokens.
     labels = repeat_input.masked_fill( masked_input != tokenizer.convert_tokens_to_ids('[MASK]'), -100) 
     with torch.inference_mode():
-        masked_input=masked_input.to(model.device)
-        labels=labels.to(model.device)
+        masked_input = masked_input.to(model.device)
+        labels = labels.to(model.device)
         total_loss = 0.
         for i in range(masked_input.shape[0]//batch_size + 1):
-            total_loss += model(masked_input[i*batch_size:(i+1)*batch_size], labels=labels[i*batch_size:(i+1)*batch_size]).loss.item()
+            curr_batch_len = masked_input[i * batch_size:(i+1) * batch_size].shape[0]
+            if curr_batch_len > 0:
+                curr_loss = model(masked_input[i * batch_size:(i+1) * batch_size], labels=labels[i*batch_size:(i+1)*batch_size]).loss
+                total_loss += (curr_loss * curr_batch_len).item()
+        # loss,_ = model(masked_input, masked_lm_labels=labels) # this is for older version of transformers
+    result = np.exp(total_loss / masked_input.shape[0])
+    if model.device.type == 'cuda' and empty_cache:
         del masked_input
         del labels
-        # loss,_ = model(masked_input, masked_lm_labels=labels) # this is for older version of transformers
-    result = np.exp(total_loss)
-    if model.device.type == 'cuda' and empty_cache:
         torch.cuda.empty_cache()
     return result
 
