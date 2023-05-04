@@ -14,3 +14,4 @@ from .string_funcs import *
 from .tf_funcs import *
 from .torch_funcs import *
 from .dataframe_funcs import *
+from .aws_funcs import *

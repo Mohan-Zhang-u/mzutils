@@ -3,3 +3,5 @@ PyYAML;                                                         yaml        # on
 tensorflow;                                                     tf          # only if you want to functions in tf_funcs.py
 hanlp;                                                          nlp         # only if you want to use set_local_vars_from_functions in nlp_metrics.py
 pyarrow;                                                        nlp         # only if you want to use parquet_append in dataframe_funcs.py                                           
+s3fs;                                                           yaml        # only if you want to use aws_funcs.py
+hashfile;                                                       yaml        # only if you want to use aws_funcs.py
