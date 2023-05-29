@@ -335,3 +335,37 @@ def top_x_multi_label_exact_matches(pred, num_labels):
     return {
         'exact_match': exact_match,
     }
+
+
+def set_seed(seed=42, use_random=True, use_np=True, use_torch=True, use_transformers=True, set_torch_backends=False, multi_gpu=False) -> None:
+    """Set random seed for reproducibility.
+    Includes options for random, numpy, torch, transformers.
+
+    Args:
+        seed (int, optional): _description_. Defaults to 42.
+        use_random (bool, optional): _description_. Defaults to True.
+        use_np (bool, optional): _description_. Defaults to True.
+        use_torch (bool, optional): _description_. Defaults to True.
+        use_transformers (bool, optional): _description_. Defaults to True.
+        set_torch_backends (bool, optional): _description_. Defaults to False.
+        multi_gpu (bool, optional): _description_. Defaults to False.
+    """
+
+    if use_random:
+        import random
+        random.seed(seed)
+    if use_np:
+        np.random.seed(seed)
+    if use_torch:
+        torch.manual_seed(seed)
+        torch.cuda.manual_seed(seed)
+        if multi_gpu:
+            torch.cuda.manual_seed_all(seed) # if you are using multi-GPU.
+        if set_torch_backends:
+            torch.backends.cudnn.benchmark = False
+            torch.backends.cudnn.deterministic = True
+    if use_transformers:
+        import transformers
+        transformers.set_seed(seed)
+    import os
+    os.environ['PYTHONHASHSEED'] = str(seed)
